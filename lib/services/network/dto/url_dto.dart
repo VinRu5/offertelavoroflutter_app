@@ -1,24 +1,24 @@
 import 'package:equatable/equatable.dart';
-import 'package:pine/dto/dto.dart';
+import 'package:offertelavoroflutter_app/services/network/dto/property_dto.dart';
 
-class UrlDTO extends DTO with EquatableMixin {
-  static const _idKey = "id";
-  static const _typeKey = "type";
+class UrlDTO extends PropertyDTO with EquatableMixin {
+  // static const _idKey = "id";
+  // static const _typeKey = "type";
   static const _urlKey = "url";
 
-  final String? id;
-  final String? type;
+  // final String? id;
+  // final String? type;
   final String? url;
 
   UrlDTO({
-    required this.id,
-    required this.type,
+    super.id,
+    super.type,
     required this.url,
   });
 
   factory UrlDTO.fromJson(Map<String, dynamic> json) => UrlDTO(
-        id: json[_idKey],
-        type: json[_typeKey],
+        id: json[PropertyDTO.idKey],
+        type: json[PropertyDTO.typeKey],
         url: json[_urlKey],
       );
 

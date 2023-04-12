@@ -6,6 +6,19 @@ import 'package:offertelavoroflutter_app/services/network/dto/properties_dto.dar
 import 'package:pine/dto/dto.dart';
 
 class JobDTO extends DTO with EquatableMixin {
+  static const _objectKey = "object";
+  static const _idKey = "id";
+  static const _createdTimeKey = "created_time";
+  static const _lastEditedTimeKey = "last_edited_time";
+  static const _createdByKey = "created_by";
+  static const _lastEditedByKey = "last_edited_by";
+  static const _coverKey = "cover";
+  static const _iconKey = "icon";
+  static const _parentKey = "parent";
+  static const _archivedKey = "archived";
+  static const _propertiesKey = "properties";
+  static const _urlKey = "url";
+
   final String? object;
   final String? id;
   final String? createdTime;
@@ -34,7 +47,20 @@ class JobDTO extends DTO with EquatableMixin {
     required this.url,
   });
 
-  /// TODO::: implementare fromJson
+  factory JobDTO.fromJson(Map<String, dynamic> json) => JobDTO(
+        object: json[_objectKey],
+        id: json[_idKey],
+        createdTime: json[_createdTimeKey],
+        lastEditedTime: json[_lastEditedTimeKey],
+        createdBy: GenericDTO.fromJson(json[_createdByKey]),
+        lastEditedBy: GenericDTO.fromJson(json[_lastEditedByKey]),
+        cover: GenericDTO.fromJson(json[_coverKey]),
+        icon: IconDTO.fromJson(json[_iconKey]),
+        parent: ParentDTO.fromJson(json[_parentKey]),
+        properties: PropertiesDTO.fromJson(json[_propertiesKey]),
+        archived: json[_archivedKey],
+        url: json[_urlKey],
+      );
 
   @override
   List<Object?> get props => [
