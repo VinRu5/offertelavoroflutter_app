@@ -1,0 +1,4 @@
+enum ContractType {
+  fullTime,
+  partTime,
+}

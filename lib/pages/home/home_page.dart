@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 print('into');
-                final resp = await context.read<JobService>().all();
+                final resp = await context.read<JobService>().allFreelance();
 
                 print('this is resp $resp');
               },

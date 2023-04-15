@@ -1,0 +1,4 @@
+enum Relationship {
+  onlyWithJobCommissioners,
+  otherProfessionist,
+}

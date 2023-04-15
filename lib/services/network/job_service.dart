@@ -12,5 +12,8 @@ abstract class JobService {
   }) = _JobService;
 
   @POST("/283d2760f81548f0a7baca4b3e58d7d8/query")
-  Future<NotionResponse> all();
+  Future<NotionResponse> allJob();
+
+  @POST("/e6a8a6760e3d4430b20a15d16f75f92e/query")
+  Future<NotionResponse> allFreelance();
 }

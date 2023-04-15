@@ -19,7 +19,7 @@ class _JobService implements JobService {
   String? baseUrl;
 
   @override
-  Future<NotionResponse> all() async {
+  Future<NotionResponse> allJob() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -33,6 +33,29 @@ class _JobService implements JobService {
             .compose(
               _dio.options,
               '/283d2760f81548f0a7baca4b3e58d7d8/query',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = NotionResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<NotionResponse> allFreelance() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<NotionResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/e6a8a6760e3d4430b20a15d16f75f92e/query',
               queryParameters: queryParameters,
               data: _data,
             )
