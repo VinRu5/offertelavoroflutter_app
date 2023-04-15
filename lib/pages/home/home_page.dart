@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/services/network/job_service.dart';
 
 class HomePage extends StatelessWidget {
@@ -18,7 +19,7 @@ class HomePage extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 print('into');
-                final resp = await context.read<JobService>().allFreelance();
+                final resp = await context.read<JobRepository>().allJobs;
 
                 print('this is resp $resp');
               },

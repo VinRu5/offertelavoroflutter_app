@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/services/network/dto/created_time_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/rich_text_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/select_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/title_dto.dart';
@@ -29,7 +30,7 @@ class PropertiesDTO extends DTO with EquatableMixin {
   static const _descrizioneDelProgettoKey = "Descrizione del progetto";
   static const _tipoDiRelazioneKey = "Tipo di relazione";
 
-  final SelectDTO? jobPosted;
+  final CreatedTimeDTO? jobPosted;
   final SelectDTO? team;
   final SelectDTO? contratto;
   final SelectDTO? seniority;
@@ -80,7 +81,7 @@ class PropertiesDTO extends DTO with EquatableMixin {
   factory PropertiesDTO.fromJson(Map<String, dynamic> json) => PropertiesDTO(
         jobPosted: json[_jobPostedKey] == null
             ? null
-            : SelectDTO.fromJson(json[_jobPostedKey]),
+            : CreatedTimeDTO.fromJson(json[_jobPostedKey]),
         team:
             json[_teamKey] == null ? null : SelectDTO.fromJson(json[_teamKey]),
         contratto: json[_contractKey] == null
