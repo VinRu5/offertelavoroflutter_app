@@ -1,25 +1,24 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/services/network/dto/property_dto.dart';
 import 'package:pine/dto/dto.dart';
 
-class SelectDTO extends DTO with EquatableMixin {
-  static const _idKey = "id";
-  static const _typeKey = "type";
+class SelectDTO extends PropertyDTO with EquatableMixin {
   static const _selectKey = "select";
 
-  final String? id;
-  final String? type;
   final SelectContentDTO? select;
 
   SelectDTO({
-    required this.id,
-    required this.type,
+    required super.id,
+    required super.type,
     required this.select,
   });
 
   factory SelectDTO.fromJson(Map<String, dynamic> json) => SelectDTO(
-        id: json[_idKey],
-        type: json[_typeKey],
-        select: SelectContentDTO.fromJson(json[_selectKey]),
+        id: json[PropertyDTO.idKey],
+        type: json[PropertyDTO.typeKey],
+        select: json[_selectKey] == null
+            ? null
+            : SelectContentDTO.fromJson(json[_selectKey]),
       );
 
   @override

@@ -5,8 +5,8 @@ class ParentDTO extends DTO with EquatableMixin {
   static const _typeKey = "type";
   static const _databaseIdKey = "database_id";
 
-  final String type;
-  final String databaseId;
+  final String? type;
+  final String? databaseId;
 
   ParentDTO({
     required this.type,

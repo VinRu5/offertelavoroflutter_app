@@ -3,6 +3,7 @@ import 'package:offertelavoroflutter_app/services/network/dto/generic_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/icon_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/parent_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/properties_dto.dart';
+import 'package:offertelavoroflutter_app/services/network/dto/properties_freelance_dto.dart';
 import 'package:pine/dto/dto.dart';
 
 class JobDTO extends DTO with EquatableMixin {
@@ -52,12 +53,22 @@ class JobDTO extends DTO with EquatableMixin {
         id: json[_idKey],
         createdTime: json[_createdTimeKey],
         lastEditedTime: json[_lastEditedTimeKey],
-        createdBy: GenericDTO.fromJson(json[_createdByKey]),
-        lastEditedBy: GenericDTO.fromJson(json[_lastEditedByKey]),
-        cover: GenericDTO.fromJson(json[_coverKey]),
-        icon: IconDTO.fromJson(json[_iconKey]),
-        parent: ParentDTO.fromJson(json[_parentKey]),
-        properties: PropertiesDTO.fromJson(json[_propertiesKey]),
+        createdBy: json[_createdByKey] == null
+            ? null
+            : GenericDTO.fromJson(json[_createdByKey]),
+        lastEditedBy: json[_lastEditedByKey] == null
+            ? null
+            : GenericDTO.fromJson(json[_lastEditedByKey]),
+        cover: json[_coverKey] == null
+            ? null
+            : GenericDTO.fromJson(json[_coverKey]),
+        icon: json[_iconKey] == null ? null : IconDTO.fromJson(json[_iconKey]),
+        parent: json[_parentKey] == null
+            ? null
+            : ParentDTO.fromJson(json[_parentKey]),
+        properties: json[_propertiesKey] == null
+            ? null
+            : PropertiesDTO.fromJson(json[_propertiesKey]),
         archived: json[_archivedKey],
         url: json[_urlKey],
       );

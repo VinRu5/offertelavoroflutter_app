@@ -24,8 +24,12 @@ class TextDTO extends DTO with EquatableMixin {
 
   factory TextDTO.fromJson(Map<String, dynamic> json) => TextDTO(
         type: json[_typeKey],
-        text: TextContentDTO.fromJson(json[_textKey]),
-        annotations: AnnotationsDTO.fromJson(json[_annotationsKey]),
+        text: json[_textKey] == null
+            ? null
+            : TextContentDTO.fromJson(json[_textKey]),
+        annotations: json[_annotationsKey] == null
+            ? null
+            : AnnotationsDTO.fromJson(json[_annotationsKey]),
         plainText: json[_plainTextKey],
         href: json[_hrefKey],
       );
@@ -43,6 +47,7 @@ class TextDTO extends DTO with EquatableMixin {
 class TextContentDTO extends DTO with EquatableMixin {
   static const _contentKey = "content";
   static const _linkKey = "link";
+  static const _urlKey = "url";
 
   final String? content;
   final String? link;
@@ -54,7 +59,7 @@ class TextContentDTO extends DTO with EquatableMixin {
 
   factory TextContentDTO.fromJson(Map<String, dynamic> json) => TextContentDTO(
         content: json[_contentKey],
-        link: json[_linkKey],
+        link: json[_linkKey] == null ? null : json[_linkKey][_urlKey],
       );
 
   @override

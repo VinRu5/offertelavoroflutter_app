@@ -15,11 +15,13 @@ List<SingleChildWidget> _providers = [
   Provider<FlutterSecureStorage>(
     create: (_) => const FlutterSecureStorage(),
   ),
-  Provider<Dio>(create: (context) => Dio()
-      // ..interceptors.addAll([
-      //   if (kDebugMode) context.read<PrettyDioLogger>(),
-      // ]),
-      ),
+  Provider<Dio>(
+    create: (context) => Dio()
+      ..interceptors.addAll([
+        AuthInterceptor(),
+        if (kDebugMode) context.read<PrettyDioLogger>(),
+      ]),
+  ),
   Provider<JobService>(
     create: (context) => JobService(
       context.read<Dio>(),

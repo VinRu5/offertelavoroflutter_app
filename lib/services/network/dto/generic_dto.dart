@@ -5,8 +5,8 @@ class GenericDTO extends DTO with EquatableMixin {
   static const _objectKey = "object";
   static const _idKey = "id";
 
-  final String object;
-  final String id;
+  final String? object;
+  final String? id;
 
   GenericDTO({
     required this.object,

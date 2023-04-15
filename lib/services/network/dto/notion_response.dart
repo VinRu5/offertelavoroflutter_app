@@ -28,7 +28,11 @@ class NotionResponse extends DTO with EquatableMixin {
 
   factory NotionResponse.fromJson(Map<String, dynamic> json) => NotionResponse(
         object: json[_objectKey],
-        results: json[_resultsKey].map(JobDTO.fromJson),
+        results: json[_resultsKey]
+            .map<JobDTO>(
+              (result) => JobDTO.fromJson(result),
+            )
+            .toList(growable: false),
         nextCursor: json[_nextCursorKey],
         hasMore: json[_hasMoreKey],
         type: json[_typeKey],

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:offertelavoroflutter_app/services/network/interceptors/auth_interceptor.dart';
 import 'package:offertelavoroflutter_app/services/network/job_service.dart';
 import 'package:pine/di/dependency_injector_helper.dart';
 import 'package:provider/provider.dart';
