@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/models/enum/contract_type.dart';
+import 'package:offertelavoroflutter_app/models/enum/seniority.dart';
+import 'package:offertelavoroflutter_app/models/enum/team_location.dart';
 
 class Job extends Equatable {
   final String id;
