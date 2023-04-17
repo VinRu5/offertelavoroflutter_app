@@ -25,4 +25,15 @@ class AppColors {
   static const gray = Color(0xFF888888);
   static const dividerGray = Color(0xFFE8E8E8);
   static const black = Color(0xFF333333);
+
+  // Gradienti
+  static const RadialGradient primaryGradient = RadialGradient(
+    colors: [
+      primaryDark,
+      primaryLight,
+    ],
+    stops: [0, 1],
+    center: Alignment.topLeft,
+    radius: 1.9,
+  );
 }

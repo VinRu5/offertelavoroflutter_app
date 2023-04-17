@@ -25,6 +25,7 @@ dependencies:
   retrofit: ^4.0.1
   auto_route: ^6.2.0
   path_provider: ^2.0.14
+  flutter_gif: ^0.0.4
   
 
 dev_dependencies:
@@ -38,6 +39,7 @@ dev_dependencies:
   data_fixture_dart: ^2.2.0
   mockito: ^5.4.0
   bloc_test: ^9.1.1
+  
 
 flutter:
   #generate: true
@@ -46,6 +48,8 @@ flutter:
     - assets/images/logo.png
     - assets/images/full_logo.png
     - assets/images/empty_chair.jpg
+    - assets/images/offertelavoroflutter.gif
+
   fonts:
     - family: Montserrat
       fonts: 
