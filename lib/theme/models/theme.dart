@@ -9,13 +9,15 @@ class LightTheme {
         fontFamily: 'Montserrat',
         appBarTheme: const AppBarTheme(
           centerTitle: true,
-          color: AppColors.transparent,
+          color: AppColors.whiteBg,
           elevation: 0,
+          toolbarHeight: 40.0,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           titleTextStyle: TextStyle(
             color: AppColors.primaryLight,
             fontSize: 20.0,
             fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
           ),
           iconTheme: IconThemeData(
             color: AppColors.primaryLight,

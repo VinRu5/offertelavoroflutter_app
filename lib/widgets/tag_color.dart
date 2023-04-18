@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 
 class TagColor extends StatelessWidget {
   final String text;
@@ -15,6 +14,9 @@ class TagColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        constraints: const BoxConstraints(
+          maxWidth: 90,
+        ),
         padding: const EdgeInsets.symmetric(
           vertical: 1.5,
           horizontal: 8.0,
@@ -27,9 +29,10 @@ class TagColor extends StatelessWidget {
           text,
           style: TextStyle(
             color: color,
-            fontSize: 12,
+            fontSize: 10,
             fontWeight: FontWeight.w600,
           ),
+          textAlign: TextAlign.center,
         ),
       );
 }
