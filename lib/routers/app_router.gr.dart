@@ -15,39 +15,39 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    HomeRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HomePage(),
-      );
-    },
     JobsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const JobsPage(),
       );
     },
-    JobDetailsRoute.name: (routeData) {
+    HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const JobDetailsPage(),
+        child: const HomePage(),
+      );
+    },
+    JobDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<JobDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: JobDetailsPage(
+          job: args.job,
+          key: args.key,
+        ),
+      );
+    },
+    FreelanceDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<FreelanceDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: FreelanceDetailsPage(
+          job: args.job,
+          key: args.key,
+        ),
       );
     },
   };
-}
-
-/// generated route for
-/// [HomePage]
-class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute({List<PageRouteInfo>? children})
-      : super(
-          HomeRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomeRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -65,15 +65,91 @@ class JobsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [JobDetailsPage]
-class JobDetailsRoute extends PageRouteInfo<void> {
-  const JobDetailsRoute({List<PageRouteInfo>? children})
+/// [HomePage]
+class HomeRoute extends PageRouteInfo<void> {
+  const HomeRoute({List<PageRouteInfo>? children})
       : super(
+          HomeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [JobDetailsPage]
+class JobDetailsRoute extends PageRouteInfo<JobDetailsRouteArgs> {
+  JobDetailsRoute({
+    required Job job,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           JobDetailsRoute.name,
+          args: JobDetailsRouteArgs(
+            job: job,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'JobDetailsRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<JobDetailsRouteArgs> page =
+      PageInfo<JobDetailsRouteArgs>(name);
+}
+
+class JobDetailsRouteArgs {
+  const JobDetailsRouteArgs({
+    required this.job,
+    this.key,
+  });
+
+  final Job job;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'JobDetailsRouteArgs{job: $job, key: $key}';
+  }
+}
+
+/// generated route for
+/// [FreelanceDetailsPage]
+class FreelanceDetailsRoute extends PageRouteInfo<FreelanceDetailsRouteArgs> {
+  FreelanceDetailsRoute({
+    required JobFreelance job,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          FreelanceDetailsRoute.name,
+          args: FreelanceDetailsRouteArgs(
+            job: job,
+            key: key,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'FreelanceDetailsRoute';
+
+  static const PageInfo<FreelanceDetailsRouteArgs> page =
+      PageInfo<FreelanceDetailsRouteArgs>(name);
+}
+
+class FreelanceDetailsRouteArgs {
+  const FreelanceDetailsRouteArgs({
+    required this.job,
+    this.key,
+  });
+
+  final JobFreelance job;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'FreelanceDetailsRouteArgs{job: $job, key: $key}';
+  }
 }

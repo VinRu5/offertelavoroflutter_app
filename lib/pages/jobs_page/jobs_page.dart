@@ -51,7 +51,6 @@ class _JobsPageState extends State<JobsPage> {
                 isFreelance: isFreelance,
               ),
             ),
-
             SliverFillRemaining(
               child: _PageViews(
                 controller: _pageController,
@@ -66,9 +65,6 @@ class _JobsPageState extends State<JobsPage> {
                 },
               ),
             ),
-
-            //TODO: Ridefinire la page con sliverAppBAr che contiene la riduzione titolo
-            //      controller page e page
           ],
         ),
       );
@@ -175,7 +171,7 @@ class _PageViews extends StatelessWidget {
   Widget build(BuildContext context) => PageView(
         onPageChanged: onChangePage,
         controller: controller,
-        children: [
+        children: const [
           JobsList(),
           FreelanceList(),
         ],

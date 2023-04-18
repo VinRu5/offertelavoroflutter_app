@@ -41,6 +41,14 @@ class LightTheme {
             fontWeight: FontWeight.w500,
             color: AppColors.black,
           ),
+          bodyLarge: TextStyle(
+            fontSize: 16,
+          ),
+          labelLarge: TextStyle(
+            color: AppColors.gray,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(

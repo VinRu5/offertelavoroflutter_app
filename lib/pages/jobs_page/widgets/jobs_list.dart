@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/job_list_bloc/job_list_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:offertelavoroflutter_app/models/enum/seniority.dart';
 import 'package:offertelavoroflutter_app/models/enum/team_location.dart';
 import 'package:offertelavoroflutter_app/models/job.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
+import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:offertelavoroflutter_app/widgets/tag_color.dart';
 
@@ -70,7 +72,9 @@ class _JobsListContent extends StatelessWidget {
         itemBuilder: (_, index) => _JobTile(
           job: jobs[index],
           onPressed: () {
-            print(index);
+            context.router.push(
+              JobDetailsRoute(job: jobs[index]),
+            );
           },
         ),
       );
