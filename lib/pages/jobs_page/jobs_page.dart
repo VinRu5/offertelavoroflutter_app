@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter_app/misc/bubble_indicator_painter.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/freelance_list.dart';
@@ -10,7 +11,12 @@ typedef PageChanged = Function(int index);
 
 @RoutePage()
 class JobsPage extends StatefulWidget {
-  const JobsPage({super.key});
+  final int initialPage;
+
+  const JobsPage({
+    super.key,
+    required this.initialPage,
+  });
 
   @override
   State<JobsPage> createState() => _JobsPageState();
@@ -19,6 +25,28 @@ class JobsPage extends StatefulWidget {
 class _JobsPageState extends State<JobsPage> {
   final PageController _pageController = PageController(initialPage: 0);
   bool isFreelance = false;
+  final List<Widget> _pages = const [
+    JobsList(),
+    FreelanceList(),
+  ];
+
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        if (widget.initialPage > 0 && widget.initialPage < _pages.length) {
+          _pageController.jumpToPage(widget.initialPage);
+        }
+      },
+    );
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -55,6 +83,7 @@ class _JobsPageState extends State<JobsPage> {
           ],
           body: _PageViews(
             controller: _pageController,
+            pages: _pages,
             onChangePage: (index) {
               setState(
                 () {
@@ -161,20 +190,19 @@ class _SwitchButton extends StatelessWidget {
 class _PageViews extends StatelessWidget {
   final PageController controller;
   final PageChanged onChangePage;
+  final List<Widget> pages;
 
   const _PageViews({
     super.key,
     required this.controller,
     required this.onChangePage,
+    required this.pages,
   });
 
   @override
   Widget build(BuildContext context) => PageView(
         onPageChanged: onChangePage,
         controller: controller,
-        children: const [
-          JobsList(),
-          FreelanceList(),
-        ],
+        children: pages,
       );
 }

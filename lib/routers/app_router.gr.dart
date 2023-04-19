@@ -16,9 +16,13 @@ abstract class _$AppRouter extends RootStackRouter {
   @override
   final Map<String, PageFactory> pagesMap = {
     JobsRoute.name: (routeData) {
+      final args = routeData.argsAs<JobsRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const JobsPage(),
+        child: JobsPage(
+          key: args.key,
+          initialPage: args.initialPage,
+        ),
       );
     },
     HomeRoute.name: (routeData) {
@@ -52,16 +56,39 @@ abstract class _$AppRouter extends RootStackRouter {
 
 /// generated route for
 /// [JobsPage]
-class JobsRoute extends PageRouteInfo<void> {
-  const JobsRoute({List<PageRouteInfo>? children})
-      : super(
+class JobsRoute extends PageRouteInfo<JobsRouteArgs> {
+  JobsRoute({
+    Key? key,
+    required int initialPage,
+    List<PageRouteInfo>? children,
+  }) : super(
           JobsRoute.name,
+          args: JobsRouteArgs(
+            key: key,
+            initialPage: initialPage,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'JobsRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<JobsRouteArgs> page = PageInfo<JobsRouteArgs>(name);
+}
+
+class JobsRouteArgs {
+  const JobsRouteArgs({
+    this.key,
+    required this.initialPage,
+  });
+
+  final Key? key;
+
+  final int initialPage;
+
+  @override
+  String toString() {
+    return 'JobsRouteArgs{key: $key, initialPage: $initialPage}';
+  }
 }
 
 /// generated route for
