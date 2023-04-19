@@ -67,5 +67,6 @@ class LightTheme {
             ),
           ),
         ),
+        switchTheme: SwitchThemeData(),
       );
 }
