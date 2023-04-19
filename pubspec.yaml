@@ -50,6 +50,8 @@ flutter:
     - assets/images/full_logo.png
     - assets/images/empty_chair.jpg
     - assets/images/offertelavoroflutter.gif
+    - assets/images/offerte_logo.png
+    - assets/images/flutter_logo.png
 
   fonts:
     - family: Montserrat

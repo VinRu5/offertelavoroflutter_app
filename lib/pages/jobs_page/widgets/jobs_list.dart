@@ -9,6 +9,7 @@ import 'package:offertelavoroflutter_app/models/job.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
+import 'package:offertelavoroflutter_app/widgets/flutter_job_loader.dart';
 import 'package:offertelavoroflutter_app/widgets/tag_color.dart';
 
 class JobsList extends StatelessWidget {
@@ -26,8 +27,8 @@ class JobsList extends StatelessWidget {
         child: BlocBuilder<JobListBloc, JobListState>(
           builder: (context, state) {
             if (state is FetchingJobListState) {
-              return Center(
-                child: CircularProgressIndicator(),
+              return const Center(
+                child: FlutterJobLoader(),
               );
             }
 

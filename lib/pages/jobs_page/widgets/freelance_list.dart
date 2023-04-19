@@ -11,6 +11,7 @@ import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
+import 'package:offertelavoroflutter_app/widgets/flutter_job_loader.dart';
 import 'package:offertelavoroflutter_app/widgets/tag_color.dart';
 
 class FreelanceList extends StatelessWidget {
@@ -28,8 +29,8 @@ class FreelanceList extends StatelessWidget {
         child: BlocBuilder<FreelanceListBloc, FreelanceListState>(
           builder: (context, state) {
             if (state is FetchingFreelanceListState) {
-              return Center(
-                child: CircularProgressIndicator(),
+              return const Center(
+                child: FlutterJobLoader(),
               );
             }
 
