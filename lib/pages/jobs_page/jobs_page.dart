@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter_app/misc/bubble_indicator_painter.dart';
+import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/drawer_content.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/freelance_list.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/jobs_list.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
@@ -51,7 +52,7 @@ class _JobsPageState extends State<JobsPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         endDrawer: const Drawer(
-          child: _DrawerContent(),
+          child: DrawerContent(),
         ),
         body: NestedScrollView(
           physics: const BouncingScrollPhysics(),
@@ -207,63 +208,5 @@ class _PageViews extends StatelessWidget {
         onPageChanged: onChangePage,
         controller: controller,
         children: pages,
-      );
-}
-
-class _DrawerContent extends StatelessWidget {
-  const _DrawerContent({super.key});
-
-  @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          Container(
-            height: 180,
-            decoration: const BoxDecoration(
-              gradient: AppColors.primaryGradient,
-            ),
-            alignment: Alignment.bottomCenter,
-            child: Image.asset(
-              "assets/images/offertelavoroflutter_banner.png",
-              color: AppColors.accent,
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: 16.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Divider(
-                    color: AppColors.gray,
-                  ),
-                  SwitchListTile(
-                    title: Text("Light Mode"),
-                    activeColor: AppColors.primaryLight,
-                    value: true,
-                    onChanged: (value) {},
-                  ),
-                  const Divider(
-                    color: AppColors.gray,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      "Le tue Offerte",
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                color: AppColors.primaryLight,
-                              ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       );
 }

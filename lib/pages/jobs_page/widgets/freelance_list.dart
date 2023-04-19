@@ -69,9 +69,7 @@ class _FreelanceListContent extends StatelessWidget {
           vertical: 32.0,
         ),
         itemCount: jobs.length,
-        separatorBuilder: (_, index) => const Divider(
-          color: AppColors.black,
-        ),
+        separatorBuilder: (_, index) => const Divider(),
         itemBuilder: (_, index) => _FreelanceTile(
           job: jobs[index],
           onPressed: () {

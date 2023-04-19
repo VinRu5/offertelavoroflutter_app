@@ -7,6 +7,7 @@ import 'package:offertelavoroflutter_app/repositories/mapper/freelance_mapper.da
 import 'package:offertelavoroflutter_app/repositories/mapper/job_mapper.dart';
 import 'package:offertelavoroflutter_app/services/network/interceptors/auth_interceptor.dart';
 import 'package:offertelavoroflutter_app/services/network/job_service.dart';
+import 'package:offertelavoroflutter_app/theme/cubit/theme_cubit.dart';
 import 'package:pine/di/dependency_injector_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
