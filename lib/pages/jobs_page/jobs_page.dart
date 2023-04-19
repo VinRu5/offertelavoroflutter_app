@@ -17,17 +17,15 @@ class JobsPage extends StatefulWidget {
 }
 
 class _JobsPageState extends State<JobsPage> {
-  final GlobalKey _switchKey = GlobalKey<State>();
   final PageController _pageController = PageController(initialPage: 0);
-  final ScrollController _scrollController = ScrollController();
   bool isFreelance = false;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: CustomScrollView(
+        body: NestedScrollView(
           physics: const BouncingScrollPhysics(),
-          controller: _scrollController,
-          slivers: [
+          headerSliverBuilder:
+              (BuildContext context, bool innerBoxIsScrolled) => [
             SliverAppBar(
               automaticallyImplyLeading: false,
               leading: IconButton(
@@ -49,29 +47,26 @@ class _JobsPageState extends State<JobsPage> {
               ),
             ),
             SliverToBoxAdapter(
-              key: _switchKey,
               child: _SwitchButton(
                 controller: _pageController,
                 isFreelance: isFreelance,
               ),
             ),
-            SliverFillRemaining(
-              child: _PageViews(
-                controller: _pageController,
-                onChangePage: (index) {
-                  setState(
-                    () {
-                      if (index == 0) {
-                        isFreelance = false;
-                      } else if (index == 1) {
-                        isFreelance = true;
-                      }
-                    },
-                  );
-                },
-              ),
-            ),
           ],
+          body: _PageViews(
+            controller: _pageController,
+            onChangePage: (index) {
+              setState(
+                () {
+                  if (index == 0) {
+                    isFreelance = false;
+                  } else if (index == 1) {
+                    isFreelance = true;
+                  }
+                },
+              );
+            },
+          ),
         ),
       );
 }

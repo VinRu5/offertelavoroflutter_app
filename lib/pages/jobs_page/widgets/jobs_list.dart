@@ -62,6 +62,7 @@ class _JobsListContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView.separated(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(
           horizontal: 16.0,
           vertical: 32.0,

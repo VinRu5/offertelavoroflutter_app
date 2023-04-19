@@ -5,7 +5,6 @@ import 'package:offertelavoroflutter_app/pages/jobs_page/jobs_page.dart';
 import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:offertelavoroflutter_app/widgets/clickable_card.dart';
-import 'package:offertelavoroflutter_app/widgets/flutter_job_loader.dart';
 
 @RoutePage()
 class HomePage extends StatelessWidget {
