@@ -1,13 +1,23 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
+import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/theme/cubit/theme_cubit.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:offertelavoroflutter_app/theme/models/theme.dart';
 
+typedef OnFavouriteCallback = Function(String idFavourite);
+
 class DrawerContent extends StatelessWidget {
-  const DrawerContent({super.key});
+  final OnFavouriteCallback? onFavourite;
+
+  const DrawerContent({
+    super.key,
+    this.onFavourite,
+  });
 
   @override
   Widget build(BuildContext context) => Column(
@@ -94,12 +104,81 @@ class DrawerContent extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: Container(),
+                    child: BlocBuilder<FavouriteJobBloc, FavouriteJobState>(
+                      builder: (context, state) {
+                        if (state is LoadedFavouriteJobState) {
+                          return _FavouriteList(
+                            favourites: state.favouriteJob,
+                            onFavourite: onFavourite,
+                          );
+                        }
+
+                        if (state is NoFavouriteJobState) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "💾\nNessun lavoro salvato nella tua lista dei preferiti",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: AppColors.primaryDark.withAlpha(200),
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }
+
+                        return const SizedBox();
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
           ),
         ],
+      );
+}
+
+class _FavouriteList extends StatelessWidget {
+  final List<FavouriteJob> favourites;
+  final OnFavouriteCallback? onFavourite;
+
+  const _FavouriteList({
+    super.key,
+    required this.favourites,
+    this.onFavourite,
+  });
+
+  @override
+  Widget build(BuildContext context) => ListView.separated(
+        physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.zero,
+        itemCount: favourites.length,
+        separatorBuilder: (_, __) => const Divider(),
+        itemBuilder: (context, index) => ListTile(
+          onTap: () {
+            context.router.pop();
+            if (onFavourite != null) {
+              onFavourite!(favourites[index].id);
+            }
+          },
+          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+          dense: false,
+          horizontalTitleGap: 0,
+          title: Text(favourites[index].position),
+          subtitle: Text(favourites[index].company),
+          leading: Text(favourites[index].emoji),
+          trailing: IconButton(
+            icon: const FaIcon(
+              FontAwesomeIcons.solidCircleXmark,
+              color: AppColors.red,
+            ),
+            onPressed: () => context
+                .read<FavouriteJobBloc>()
+                .removeFavourite(favourites[index]),
+          ),
+        ),
       );
 }

@@ -9,4 +9,7 @@ List<RepositoryProvider> _repositories = [
       logger: context.read<Logger>(),
     ),
   ),
+  RepositoryProvider<FavouriteRepository>(
+    create: (_) => FavouriteRepository(),
+  ),
 ];

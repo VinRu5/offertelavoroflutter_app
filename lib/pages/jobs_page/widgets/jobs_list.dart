@@ -8,7 +8,6 @@ import 'package:offertelavoroflutter_app/models/enum/team_location.dart';
 import 'package:offertelavoroflutter_app/models/job.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/routers/app_router.dart';
-import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:offertelavoroflutter_app/widgets/flutter_job_loader.dart';
 import 'package:offertelavoroflutter_app/widgets/tag_color.dart';
 
@@ -16,39 +15,30 @@ class JobsList extends StatelessWidget {
   const JobsList({super.key});
 
   @override
-  Widget build(BuildContext context) => MultiBlocProvider(
-        providers: [
-          BlocProvider<JobListBloc>(
-            create: (context) => JobListBloc(
-              jobRepository: context.read<JobRepository>(),
-            )..fetchJobs(),
-          ),
-        ],
-        child: BlocBuilder<JobListBloc, JobListState>(
-          builder: (context, state) {
-            if (state is FetchingJobListState) {
-              return const Center(
-                child: FlutterJobLoader(),
-              );
-            }
+  Widget build(BuildContext context) => BlocBuilder<JobListBloc, JobListState>(
+        builder: (context, state) {
+          if (state is FetchingJobListState) {
+            return const Center(
+              child: FlutterJobLoader(),
+            );
+          }
 
-            if (state is FetchedJobListState) {
-              return _JobsListContent(
-                jobs: state.jobs,
-              );
-            }
+          if (state is FetchedJobListState) {
+            return _JobsListContent(
+              jobs: state.jobs,
+            );
+          }
 
-            if (state is NoJobListState) {
-              return Text('Nessun lavoro');
-            }
+          if (state is NoJobListState) {
+            return Text('Nessun lavoro');
+          }
 
-            if (state is ErrorJobListState) {
-              return Text('Errore di caricamento');
-            }
+          if (state is ErrorJobListState) {
+            return Text('Errore di caricamento');
+          }
 
-            return const SizedBox();
-          },
-        ),
+          return const SizedBox();
+        },
       );
 }
 

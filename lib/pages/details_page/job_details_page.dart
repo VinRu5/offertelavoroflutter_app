@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
 import 'package:offertelavoroflutter_app/models/enum/contract_type.dart';
 import 'package:offertelavoroflutter_app/models/enum/seniority.dart';
 import 'package:offertelavoroflutter_app/models/enum/team_location.dart';
+import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/models/job.dart';
 import 'package:offertelavoroflutter_app/pages/details_page/widgets/rich_text_row.dart';
 import 'package:offertelavoroflutter_app/pages/details_page/widgets/select_row.dart';
@@ -47,12 +50,42 @@ class JobDetailsPage extends StatelessWidget {
                 ),
               ),
               actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const FaIcon(
-                    FontAwesomeIcons.bookmark,
-                    size: 24.0,
-                  ),
+                BlocBuilder<FavouriteJobBloc, FavouriteJobState>(
+                  builder: (context, state) {
+                    if (state is LoadedFavouriteJobState) {
+                      final isFavourite = state.favouriteJob.any(
+                        (favorite) => favorite.id == job.id,
+                      );
+
+                      return IconButton(
+                        onPressed: () => isFavourite
+                            ? context.read<FavouriteJobBloc>().removeFavourite(
+                                  FavouriteJob.fromJob(job),
+                                )
+                            : context.read<FavouriteJobBloc>().addFavourite(
+                                  FavouriteJob.fromJob(job),
+                                ),
+                        icon: FaIcon(
+                          isFavourite
+                              ? FontAwesomeIcons.solidBookmark
+                              : FontAwesomeIcons.bookmark,
+                          size: 24.0,
+                        ),
+                      );
+                    }
+
+                    return IconButton(
+                      onPressed: () => state is NoFavouriteJobState
+                          ? context.read<FavouriteJobBloc>().addFavourite(
+                                FavouriteJob.fromJob(job),
+                              )
+                          : null,
+                      icon: const FaIcon(
+                        FontAwesomeIcons.bookmark,
+                        size: 24.0,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -71,7 +104,9 @@ class JobDetailsPage extends StatelessWidget {
                     ),
                     TextRow(
                       label: "Qualifica",
-                      text: job.qualification,
+                      text: job.qualification.isNotEmpty
+                          ? job.qualification
+                          : job.title,
                     ),
                     SelectRow(
                       label: "Seniority",

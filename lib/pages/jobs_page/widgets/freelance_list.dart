@@ -18,39 +18,31 @@ class FreelanceList extends StatelessWidget {
   const FreelanceList({super.key});
 
   @override
-  Widget build(BuildContext context) => MultiBlocProvider(
-        providers: [
-          BlocProvider<FreelanceListBloc>(
-            create: (context) => FreelanceListBloc(
-              jobRepository: context.read<JobRepository>(),
-            )..fetchFreelance(),
-          ),
-        ],
-        child: BlocBuilder<FreelanceListBloc, FreelanceListState>(
-          builder: (context, state) {
-            if (state is FetchingFreelanceListState) {
-              return const Center(
-                child: FlutterJobLoader(),
-              );
-            }
+  Widget build(BuildContext context) =>
+      BlocBuilder<FreelanceListBloc, FreelanceListState>(
+        builder: (context, state) {
+          if (state is FetchingFreelanceListState) {
+            return const Center(
+              child: FlutterJobLoader(),
+            );
+          }
 
-            if (state is FetchedFreelanceListState) {
-              return _FreelanceListContent(
-                jobs: state.freelanceJobs,
-              );
-            }
+          if (state is FetchedFreelanceListState) {
+            return _FreelanceListContent(
+              jobs: state.freelanceJobs,
+            );
+          }
 
-            if (state is NoFreelanceListState) {
-              return Text('Nessun lavoro');
-            }
+          if (state is NoFreelanceListState) {
+            return Text('Nessun lavoro');
+          }
 
-            if (state is ErrorFreelanceListState) {
-              return Text('Errore di caricamento');
-            }
+          if (state is ErrorFreelanceListState) {
+            return Text('Errore di caricamento');
+          }
 
-            return const SizedBox();
-          },
-        ),
+          return const SizedBox();
+        },
       );
 }
 

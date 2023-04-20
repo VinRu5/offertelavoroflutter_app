@@ -1,17 +1,26 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
+import 'package:offertelavoroflutter_app/blocs/freelance_list_bloc/freelance_list_bloc.dart';
+import 'package:offertelavoroflutter_app/blocs/job_list_bloc/job_list_bloc.dart';
 import 'package:offertelavoroflutter_app/misc/bubble_indicator_painter.dart';
+import 'package:offertelavoroflutter_app/models/job.dart';
+import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/drawer_content.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/freelance_list.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/jobs_list.dart';
+import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
+import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
+import 'package:collection/collection.dart';
 
 typedef PageChanged = Function(int index);
 
 @RoutePage()
-class JobsPage extends StatefulWidget {
+class JobsPage extends StatefulWidget with AutoRouteWrapper {
   final int initialPage;
 
   const JobsPage({
@@ -21,11 +30,30 @@ class JobsPage extends StatefulWidget {
 
   @override
   State<JobsPage> createState() => _JobsPageState();
+
+  @override
+  Widget wrappedRoute(BuildContext context) => MultiBlocProvider(
+        providers: [
+          BlocProvider<JobListBloc>(
+            create: (context) => JobListBloc(
+              jobRepository: context.read<JobRepository>(),
+            )..fetchJobs(),
+          ),
+          BlocProvider<FreelanceListBloc>(
+            create: (context) => FreelanceListBloc(
+              jobRepository: context.read<JobRepository>(),
+            )..fetchFreelance(),
+          )
+        ],
+        child: this,
+      );
 }
 
 class _JobsPageState extends State<JobsPage> {
   final PageController _pageController = PageController(initialPage: 0);
   bool isFreelance = false;
+  List<Job> jobs = [];
+  List<JobFreelance> freelanceJobs = [];
   final List<Widget> _pages = const [
     JobsList(),
     FreelanceList(),
@@ -50,58 +78,101 @@ class _JobsPageState extends State<JobsPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        endDrawer: const Drawer(
-          child: DrawerContent(),
-        ),
-        body: NestedScrollView(
-          physics: const BouncingScrollPhysics(),
-          headerSliverBuilder:
-              (BuildContext context, bool innerBoxIsScrolled) => [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              leading: IconButton(
-                onPressed: () => context.router.pop(),
-                icon: const FaIcon(
-                  FontAwesomeIcons.chevronLeft,
-                  size: 24.0,
-                ),
-              ),
-              expandedHeight: 100,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text(
-                  "Offerte",
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: AppColors.primaryLight,
-                      ),
-                ),
+  Widget build(BuildContext context) => BlocListener<JobListBloc, JobListState>(
+        listener: (context, state) {
+          if (state is NoJobListState) {
+            jobs = [];
+          }
+
+          if (state is FetchedJobListState) {
+            jobs = state.jobs;
+          }
+        },
+        child: BlocListener<FreelanceListBloc, FreelanceListState>(
+          listener: (context, state) {
+            if (state is NoFreelanceListState) {
+              freelanceJobs = [];
+            }
+
+            if (state is FetchedFreelanceListState) {
+              freelanceJobs = state.freelanceJobs;
+            }
+          },
+          child: Scaffold(
+            endDrawer: Drawer(
+              child: DrawerContent(
+                onFavourite: _onFavourite,
               ),
             ),
-            SliverToBoxAdapter(
-              child: _SwitchButton(
+            body: NestedScrollView(
+              physics: const BouncingScrollPhysics(),
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) => [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  leading: IconButton(
+                    onPressed: () => context.router.pop(),
+                    icon: const FaIcon(
+                      FontAwesomeIcons.chevronLeft,
+                      size: 24.0,
+                    ),
+                  ),
+                  expandedHeight: 100,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text(
+                      "Offerte",
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                color: AppColors.primaryLight,
+                              ),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: _SwitchButton(
+                    controller: _pageController,
+                    isFreelance: isFreelance,
+                  ),
+                ),
+              ],
+              body: _PageViews(
                 controller: _pageController,
-                isFreelance: isFreelance,
+                pages: _pages,
+                onChangePage: (index) {
+                  setState(
+                    () {
+                      if (index == 0) {
+                        isFreelance = false;
+                      } else if (index == 1) {
+                        isFreelance = true;
+                      }
+                    },
+                  );
+                },
               ),
             ),
-          ],
-          body: _PageViews(
-            controller: _pageController,
-            pages: _pages,
-            onChangePage: (index) {
-              setState(
-                () {
-                  if (index == 0) {
-                    isFreelance = false;
-                  } else if (index == 1) {
-                    isFreelance = true;
-                  }
-                },
-              );
-            },
           ),
         ),
       );
+
+  _onFavourite(idFavourite) {
+    final job = jobs.firstWhereOrNull((job) => job.id == idFavourite);
+    final freelance =
+        freelanceJobs.firstWhereOrNull((job) => job.id == idFavourite);
+
+    if (job != null) {
+      context.router.push(
+        JobDetailsRoute(
+          job: job,
+        ),
+      );
+    } else if (freelance != null) {
+      context.router.push(
+        FreelanceDetailsRoute(job: freelance),
+      );
+    }
+  }
 }
 
 class _SwitchButton extends StatelessWidget {
