@@ -4,10 +4,10 @@ import 'package:url_launcher/url_launcher.dart';
 class UrlLauncherRepository {
   const UrlLauncherRepository();
 
-  launchMyUrl(String urlString) async {
+  Future<void> launchMyUrl(String urlString) async {
     final bool isEmail = RegExp(K.regexEmail).hasMatch(urlString);
     final bool isUrl = RegExp(K.regexUrl).hasMatch(urlString);
-    Uri? uri;
+    Uri uri;
 
     if (isEmail) {
       uri = Uri(
@@ -17,18 +17,15 @@ class UrlLauncherRepository {
     } else if (isUrl) {
       uri = Uri.parse(urlString);
     } else {
-      uri = null;
       throw ErrorLauncher("Non è presente nè un link, nè una mail");
     }
 
-    if (uri != null) {
-      final checkLaunch = await canLaunchUrl(uri);
+    final checkLaunch = await canLaunchUrl(uri);
 
-      if (!checkLaunch) {
-        throw ErrorLauncher("Non è possibile aprire il link");
-      } else {
-        launchUrl(uri);
-      }
+    if (!checkLaunch) {
+      throw ErrorLauncher("Non è possibile aprire il link");
+    } else {
+      launchUrl(uri);
     }
   }
 }

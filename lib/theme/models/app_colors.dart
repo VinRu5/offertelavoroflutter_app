@@ -30,6 +30,7 @@ class AppColors {
   static const black = Color(0xFF333333);
   static const blackBg = Color(0xFF303030);
   static const red = Color(0xFFF03C50);
+  static const lightRed = Color(0xFFFF5C5C);
 
   // Gradienti
   static const RadialGradient primaryGradient = RadialGradient(

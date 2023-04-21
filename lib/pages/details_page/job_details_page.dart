@@ -14,6 +14,7 @@ import 'package:offertelavoroflutter_app/pages/details_page/widgets/text_row.dar
 import 'package:offertelavoroflutter_app/repositories/url_launcher_repository.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:offertelavoroflutter_app/widgets/error_popup_widget.dart';
 
 @RoutePage()
 class JobDetailsPage extends StatelessWidget {
@@ -142,11 +143,16 @@ class JobDetailsPage extends StatelessWidget {
                       underline: true,
                       onPressed: () async {
                         try {
-                          context
+                          await context
                               .read<UrlLauncherRepository>()
                               .launchMyUrl(job.toApply);
                         } catch (e) {
-                          _showErrorModal();
+                          _showErrorModal(
+                            context,
+                            e is ErrorLauncher
+                                ? e.text ?? ''
+                                : 'C\'è stato un errore',
+                          );
                         }
                       },
                     ),
@@ -171,7 +177,19 @@ class JobDetailsPage extends StatelessWidget {
         ),
       );
 
-  void _showErrorModal() {
-    print("error");
+  void _showErrorModal(
+    BuildContext context,
+    String errorMessage,
+  ) {
+    showDialog(
+      context: context,
+      useSafeArea: false,
+      barrierDismissible: true,
+      barrierColor: AppColors.transparent,
+      builder: (BuildContext context) => ErrorPopupWidget(
+        title: "⚠️\nErrore",
+        subtitle: errorMessage,
+      ),
+    );
   }
 }

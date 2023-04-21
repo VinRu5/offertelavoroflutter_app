@@ -9,8 +9,10 @@ import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 import 'package:offertelavoroflutter_app/pages/details_page/widgets/rich_text_row.dart';
 import 'package:offertelavoroflutter_app/pages/details_page/widgets/select_row.dart';
 import 'package:offertelavoroflutter_app/pages/details_page/widgets/text_row.dart';
+import 'package:offertelavoroflutter_app/repositories/url_launcher_repository.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:offertelavoroflutter_app/widgets/error_popup_widget.dart';
 
 @RoutePage()
 class FreelanceDetailsPage extends StatelessWidget {
@@ -125,6 +127,21 @@ class FreelanceDetailsPage extends StatelessWidget {
                     TextRow(
                       label: "Come candidarsi",
                       text: job.toApply,
+                      underline: true,
+                      onPressed: () async {
+                        try {
+                          await context
+                              .read<UrlLauncherRepository>()
+                              .launchMyUrl(job.toApply);
+                        } catch (e) {
+                          _showErrorModal(
+                            context,
+                            e is ErrorLauncher
+                                ? e.text ?? ''
+                                : 'C\'è stato un errore',
+                          );
+                        }
+                      },
                     ),
                     TextRow(
                       label: "Job Posted",
@@ -138,4 +155,20 @@ class FreelanceDetailsPage extends StatelessWidget {
           ],
         ),
       );
+
+  void _showErrorModal(
+    BuildContext context,
+    String errorMessage,
+  ) {
+    showDialog(
+      context: context,
+      useSafeArea: false,
+      barrierDismissible: true,
+      barrierColor: AppColors.transparent,
+      builder: (BuildContext context) => ErrorPopupWidget(
+        title: "⚠️\nErrore",
+        subtitle: errorMessage,
+      ),
+    );
+  }
 }
