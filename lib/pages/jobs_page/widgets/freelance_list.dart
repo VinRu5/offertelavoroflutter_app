@@ -1,12 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/freelance_list_bloc/freelance_list_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/job_list_bloc/job_list_bloc.dart';
 import 'package:offertelavoroflutter_app/models/enum/contract_type.dart';
 import 'package:offertelavoroflutter_app/models/enum/relationship.dart';
 import 'package:offertelavoroflutter_app/models/enum/seniority.dart';
 import 'package:offertelavoroflutter_app/models/enum/team_location.dart';
+import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/routers/app_router.dart';
@@ -55,22 +58,70 @@ class _FreelanceListContent extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => ListView.separated(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 32.0,
-        ),
-        itemCount: jobs.length,
-        separatorBuilder: (_, index) => const Divider(),
-        itemBuilder: (_, index) => _FreelanceTile(
-          job: jobs[index],
-          onPressed: () {
-            context.router.push(
-              FreelanceDetailsRoute(job: jobs[index]),
-            );
-          },
-        ),
+  Widget build(BuildContext context) =>
+      BlocBuilder<FavouriteJobBloc, FavouriteJobState>(
+        builder: (context, stateFavourite) {
+          return ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 32.0,
+            ),
+            itemCount: jobs.length,
+            separatorBuilder: (_, index) => const Divider(),
+            itemBuilder: (_, index) => Column(
+              children: [
+                _FreelanceTile(
+                  job: jobs[index],
+                  onPressed: () {
+                    context.router.push(
+                      FreelanceDetailsRoute(job: jobs[index]),
+                    );
+                  },
+                ),
+                Visibility(
+                  visible: _isFavourite(
+                    (stateFavourite is LoadedFavouriteJobState
+                        ? stateFavourite.favouriteJob
+                        : []),
+                    jobs[index].id,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 8.0,
+                      right: 8.0,
+                      top: 4.0,
+                      bottom: 0.0,
+                    ),
+                    child: Row(
+                      children: [
+                        const FaIcon(
+                          FontAwesomeIcons.solidBookmark,
+                          size: 8.0,
+                          color: AppColors.primaryLight,
+                        ),
+                        const SizedBox(width: 4.0),
+                        Expanded(
+                          child: Container(
+                            color: AppColors.primaryLight,
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       );
+
+  bool _isFavourite(List<FavouriteJob> list, String jobId) {
+    final favouriteIds = list.map((e) => e.id);
+
+    return favouriteIds.contains(jobId);
+  }
 }
 
 class _FreelanceTile extends StatelessWidget {

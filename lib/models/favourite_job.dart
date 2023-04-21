@@ -20,7 +20,7 @@ class FavouriteJob extends Equatable {
   factory FavouriteJob.fromJob(Job job) => FavouriteJob(
         id: job.id,
         company: job.company,
-        position: job.qualification,
+        position: job.qualification.isNotEmpty ? job.qualification : job.title,
         emoji: job.emoji,
       );
 

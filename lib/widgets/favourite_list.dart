@@ -42,7 +42,13 @@ class FavouriteList extends StatelessWidget {
               horizontalTitleGap: 0,
               title: Text(favourites[index].position),
               subtitle: Text(favourites[index].company),
-              leading: Text(favourites[index].emoji),
+              leading: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(favourites[index].emoji),
+                ],
+              ),
               trailing: IconButton(
                 icon: const FaIcon(
                   FontAwesomeIcons.solidCircleXmark,

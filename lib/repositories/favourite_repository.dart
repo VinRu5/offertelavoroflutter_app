@@ -1,4 +1,6 @@
 import 'package:offertelavoroflutter_app/models/favourite_job.dart';
+import 'package:offertelavoroflutter_app/models/job.dart';
+import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 
 class FavouriteRepository {
