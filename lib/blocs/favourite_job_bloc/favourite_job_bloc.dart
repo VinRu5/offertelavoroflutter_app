@@ -15,6 +15,7 @@ class FavouriteJobBloc
   static const _companyKey = "company";
   static const _positionKey = "position";
   static const _emojiKey = "emoji";
+  static const _isAvailableKey = "available";
 
   final FavouriteRepository favouriteRepository;
 
@@ -22,11 +23,11 @@ class FavouriteJobBloc
       : super(const NoFavouriteJobState()) {
     on<AddFavouriteJobEvent>(_onAddFavouriteJobEvent);
     on<RemoveFavouriteJobEvent>(_onRemoveFavouriteJobEvent);
+    on<GetFavouriteJobEvent>(_onGetFavouriteJobEvent);
   }
 
   @override
   FavouriteJobState? fromJson(Map<String, dynamic> json) {
-    print('🦁 into from json');
     if (json[_favouriteJobKey].length != 0) {
       final favouriteJob = (json[_favouriteJobKey] as List)
           .map(
@@ -35,10 +36,11 @@ class FavouriteJobBloc
               company: jsonJob[_companyKey],
               position: jsonJob[_positionKey],
               emoji: jsonJob[_emojiKey],
+              isAvailable: jsonJob[_isAvailableKey],
             ),
           )
           .toList(growable: false);
-      print('🦁 into from json loaded');
+
       favouriteRepository.setFavourites(List.from(favouriteJob));
 
       return LoadedFavouriteJobState(favouriteJob);
@@ -49,7 +51,6 @@ class FavouriteJobBloc
 
   @override
   Map<String, dynamic>? toJson(FavouriteJobState state) {
-    print('🦁 into json $state');
     if (state is LoadedFavouriteJobState) {
       return {
         _favouriteJobKey: state.favouriteJob
@@ -58,6 +59,7 @@ class FavouriteJobBloc
                   _companyKey: job.company,
                   _positionKey: job.position,
                   _emojiKey: job.emoji,
+                  _isAvailableKey: job.isAvailable,
                 })
             .toList(growable: false),
       };
@@ -72,6 +74,8 @@ class FavouriteJobBloc
 
   void removeFavourite(FavouriteJob job) => add(RemoveFavouriteJobEvent(job));
 
+  void getFavourite() => add(const GetFavouriteJobEvent());
+
   FutureOr<void> _onAddFavouriteJobEvent(
       AddFavouriteJobEvent event, Emitter<FavouriteJobState> emit) {
     emit(const LoadingFavouriteJobState());
@@ -83,7 +87,6 @@ class FavouriteJobBloc
           ? LoadedFavouriteJobState(favouriteJob)
           : const NoFavouriteJobState(),
     );
-    print('🦁 into add');
   }
 
   FutureOr<void> _onRemoveFavouriteJobEvent(
@@ -97,5 +100,23 @@ class FavouriteJobBloc
           ? LoadedFavouriteJobState(favouriteJob)
           : const NoFavouriteJobState(),
     );
+  }
+
+  FutureOr<void> _onGetFavouriteJobEvent(
+      GetFavouriteJobEvent event, Emitter<FavouriteJobState> emit) async {
+    print("get");
+    emit(const LoadingFavouriteJobState());
+
+    try {
+      final favouriteJob = await favouriteRepository.checkAvailable();
+
+      emit(
+        favouriteJob.isNotEmpty
+            ? LoadedFavouriteJobState(favouriteJob)
+            : const NoFavouriteJobState(),
+      );
+    } catch (e) {
+      emit(const ErrorFavouriteJobState());
+    }
   }
 }

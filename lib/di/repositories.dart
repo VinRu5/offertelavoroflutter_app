@@ -10,7 +10,7 @@ List<RepositoryProvider> _repositories = [
     ),
   ),
   RepositoryProvider<FavouriteRepository>(
-    create: (_) => FavouriteRepository(),
+    create: (context) => FavouriteRepository(context.read<JobRepository>()),
   ),
   RepositoryProvider<UrlLauncherRepository>(
     create: (_) => const UrlLauncherRepository(),

@@ -8,6 +8,7 @@ import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/theme/cubit/theme_cubit.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:offertelavoroflutter_app/theme/models/theme.dart';
+import 'package:offertelavoroflutter_app/widgets/favourite_list.dart';
 
 typedef OnFavouriteCallback = Function(String idFavourite);
 
@@ -106,8 +107,25 @@ class DrawerContent extends StatelessWidget {
                   Expanded(
                     child: BlocBuilder<FavouriteJobBloc, FavouriteJobState>(
                       builder: (context, state) {
+                        if (state is LoadingFavouriteJobState) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "⚙️ Sto caricando i tuoi dati...",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color:
+                                        AppColors.primaryLight.withAlpha(200),
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }
+
                         if (state is LoadedFavouriteJobState) {
-                          return _FavouriteList(
+                          return FavouriteList(
                             favourites: state.favouriteJob,
                             onFavourite: onFavourite,
                           );
@@ -122,7 +140,8 @@ class DrawerContent extends StatelessWidget {
                                   .textTheme
                                   .bodyMedium
                                   ?.copyWith(
-                                    color: AppColors.primaryDark.withAlpha(200),
+                                    color:
+                                        AppColors.primaryLight.withAlpha(200),
                                   ),
                               textAlign: TextAlign.center,
                             ),
@@ -138,47 +157,5 @@ class DrawerContent extends StatelessWidget {
             ),
           ),
         ],
-      );
-}
-
-class _FavouriteList extends StatelessWidget {
-  final List<FavouriteJob> favourites;
-  final OnFavouriteCallback? onFavourite;
-
-  const _FavouriteList({
-    super.key,
-    required this.favourites,
-    this.onFavourite,
-  });
-
-  @override
-  Widget build(BuildContext context) => ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.zero,
-        itemCount: favourites.length,
-        separatorBuilder: (_, __) => const Divider(),
-        itemBuilder: (context, index) => ListTile(
-          onTap: () {
-            context.router.pop();
-            if (onFavourite != null) {
-              onFavourite!(favourites[index].id);
-            }
-          },
-          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-          dense: false,
-          horizontalTitleGap: 0,
-          title: Text(favourites[index].position),
-          subtitle: Text(favourites[index].company),
-          leading: Text(favourites[index].emoji),
-          trailing: IconButton(
-            icon: const FaIcon(
-              FontAwesomeIcons.solidCircleXmark,
-              color: AppColors.red,
-            ),
-            onPressed: () => context
-                .read<FavouriteJobBloc>()
-                .removeFavourite(favourites[index]),
-          ),
-        ),
       );
 }

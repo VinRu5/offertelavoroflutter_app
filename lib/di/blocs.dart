@@ -5,6 +5,7 @@ List<BlocProvider> _blocs = [
     create: (context) => ThemeCubit(),
   ),
   BlocProvider<FavouriteJobBloc>(
-    create: (context) => FavouriteJobBloc(context.read<FavouriteRepository>()),
+    create: (context) =>
+        FavouriteJobBloc(context.read<FavouriteRepository>())..getFavourite(),
   ),
 ];
