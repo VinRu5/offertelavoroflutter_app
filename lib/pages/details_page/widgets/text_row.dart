@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 class TextRow extends StatelessWidget {
   final String label;
   final String text;
+  final GestureTapCallback? onPressed;
+  final bool underline;
 
   const TextRow({
     super.key,
     required this.label,
     required this.text,
+    this.onPressed,
+    this.underline = false,
   });
 
   @override
@@ -30,9 +34,16 @@ class TextRow extends StatelessWidget {
                       "Non disponibile",
                       style: Theme.of(context).textTheme.bodySmall,
                     )
-                  : Text(
-                      text,
-                      style: Theme.of(context).textTheme.bodyLarge,
+                  : GestureDetector(
+                      onTap: onPressed,
+                      child: Text(
+                        text,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              decoration: underline
+                                  ? TextDecoration.underline
+                                  : TextDecoration.none,
+                            ),
+                      ),
                     ),
             ),
           ],

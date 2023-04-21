@@ -8,6 +8,7 @@ import 'package:offertelavoroflutter_app/repositories/favourite_repository.dart'
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/repositories/mapper/freelance_mapper.dart';
 import 'package:offertelavoroflutter_app/repositories/mapper/job_mapper.dart';
+import 'package:offertelavoroflutter_app/repositories/url_launcher_repository.dart';
 import 'package:offertelavoroflutter_app/services/network/interceptors/auth_interceptor.dart';
 import 'package:offertelavoroflutter_app/services/network/job_service.dart';
 import 'package:offertelavoroflutter_app/theme/cubit/theme_cubit.dart';

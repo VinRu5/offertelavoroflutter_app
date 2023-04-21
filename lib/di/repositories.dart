@@ -12,4 +12,7 @@ List<RepositoryProvider> _repositories = [
   RepositoryProvider<FavouriteRepository>(
     create: (_) => FavouriteRepository(),
   ),
+  RepositoryProvider<UrlLauncherRepository>(
+    create: (_) => const UrlLauncherRepository(),
+  ),
 ];

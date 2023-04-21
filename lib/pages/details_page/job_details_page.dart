@@ -11,6 +11,7 @@ import 'package:offertelavoroflutter_app/models/job.dart';
 import 'package:offertelavoroflutter_app/pages/details_page/widgets/rich_text_row.dart';
 import 'package:offertelavoroflutter_app/pages/details_page/widgets/select_row.dart';
 import 'package:offertelavoroflutter_app/pages/details_page/widgets/text_row.dart';
+import 'package:offertelavoroflutter_app/repositories/url_launcher_repository.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:intl/intl.dart';
 
@@ -40,6 +41,7 @@ class JobDetailsPage extends StatelessWidget {
               expandedHeight: 120,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
                 title: Text(
                   "${job.emoji} ${job.qualification}",
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -137,6 +139,16 @@ class JobDetailsPage extends StatelessWidget {
                     TextRow(
                       label: "Come candidarsi",
                       text: job.toApply,
+                      underline: true,
+                      onPressed: () async {
+                        try {
+                          context
+                              .read<UrlLauncherRepository>()
+                              .launchMyUrl(job.toApply);
+                        } catch (e) {
+                          _showErrorModal();
+                        }
+                      },
                     ),
                     TextRow(
                       label: "Job Posted",
@@ -158,4 +170,8 @@ class JobDetailsPage extends StatelessWidget {
           ],
         ),
       );
+
+  void _showErrorModal() {
+    print("error");
+  }
 }

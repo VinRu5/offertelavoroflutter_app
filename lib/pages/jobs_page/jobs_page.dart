@@ -120,6 +120,7 @@ class _JobsPageState extends State<JobsPage> {
                   expandedHeight: 100,
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
                     title: Text(
                       "Offerte",
                       style:
