@@ -140,7 +140,6 @@ class _ContentHome extends StatelessWidget {
                       FavouriteList(
                         shrinkWrap: true,
                         favourites: state.favouriteJob,
-                        onFavourite: (favouriteId) {},
                       ),
                     ],
                   ),

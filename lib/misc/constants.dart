@@ -2,7 +2,7 @@ class K {
   const K._();
 
   /// Network
-  static const baseUrl = "https://api.notion.com/v1/databases";
+  static const baseUrl = "https://api.notion.com/v1";
 
   // RegEx
   static const regexEmail =

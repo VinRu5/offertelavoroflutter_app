@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/models/enum/job_type.dart';
 import 'package:offertelavoroflutter_app/models/job.dart';
 import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 
@@ -7,6 +8,7 @@ class FavouriteJob extends Equatable {
   final String company;
   final String position;
   final String emoji;
+  final JobType jobType;
   bool isAvailable;
 
   FavouriteJob({
@@ -14,6 +16,7 @@ class FavouriteJob extends Equatable {
     this.company = '',
     this.position = '',
     this.emoji = '',
+    required this.jobType,
     this.isAvailable = true,
   });
 
@@ -21,12 +24,14 @@ class FavouriteJob extends Equatable {
         id: job.id,
         company: job.company,
         position: job.qualification.isNotEmpty ? job.qualification : job.title,
+        jobType: JobType.office,
         emoji: job.emoji,
       );
 
   factory FavouriteJob.fromFreelance(JobFreelance job) => FavouriteJob(
         id: job.id,
         position: job.code,
+        jobType: JobType.freelance,
         emoji: job.emoji,
       );
 
@@ -35,6 +40,7 @@ class FavouriteJob extends Equatable {
         id,
         company,
         position,
+        jobType,
         emoji,
       ];
 }

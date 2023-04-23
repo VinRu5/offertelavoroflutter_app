@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:offertelavoroflutter_app/models/enum/job_type.dart';
 import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/repositories/favourite_repository.dart';
 
@@ -15,6 +16,7 @@ class FavouriteJobBloc
   static const _companyKey = "company";
   static const _positionKey = "position";
   static const _emojiKey = "emoji";
+  static const _jobTypeKey = "job_type";
   static const _isAvailableKey = "available";
 
   final FavouriteRepository favouriteRepository;
@@ -36,6 +38,9 @@ class FavouriteJobBloc
               company: jsonJob[_companyKey],
               position: jsonJob[_positionKey],
               emoji: jsonJob[_emojiKey],
+              jobType: JobType.values.firstWhere(
+                (element) => element.name == jsonJob[_jobTypeKey],
+              ),
               isAvailable: jsonJob[_isAvailableKey],
             ),
           )
@@ -59,6 +64,7 @@ class FavouriteJobBloc
                   _companyKey: job.company,
                   _positionKey: job.position,
                   _emojiKey: job.emoji,
+                  _jobTypeKey: job.jobType.name,
                   _isAvailableKey: job.isAvailable,
                 })
             .toList(growable: false),

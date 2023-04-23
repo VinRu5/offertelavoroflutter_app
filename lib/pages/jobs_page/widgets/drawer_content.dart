@@ -10,14 +10,9 @@ import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:offertelavoroflutter_app/theme/models/theme.dart';
 import 'package:offertelavoroflutter_app/widgets/favourite_list.dart';
 
-typedef OnFavouriteCallback = Function(String idFavourite);
-
 class DrawerContent extends StatelessWidget {
-  final OnFavouriteCallback? onFavourite;
-
   const DrawerContent({
     super.key,
-    this.onFavourite,
   });
 
   @override
@@ -127,7 +122,6 @@ class DrawerContent extends StatelessWidget {
                         if (state is LoadedFavouriteJobState) {
                           return FavouriteList(
                             favourites: state.favouriteJob,
-                            onFavourite: onFavourite,
                           );
                         }
 

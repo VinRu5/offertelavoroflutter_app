@@ -13,9 +13,7 @@ import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/drawer_content.
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/freelance_list.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/jobs_list.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
-import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
-import 'package:collection/collection.dart';
 
 typedef PageChanged = Function(int index);
 
@@ -99,10 +97,8 @@ class _JobsPageState extends State<JobsPage> {
             }
           },
           child: Scaffold(
-            endDrawer: Drawer(
-              child: DrawerContent(
-                onFavourite: _onFavourite,
-              ),
+            endDrawer: const Drawer(
+              child: DrawerContent(),
             ),
             body: NestedScrollView(
               physics: const BouncingScrollPhysics(),
@@ -156,24 +152,6 @@ class _JobsPageState extends State<JobsPage> {
           ),
         ),
       );
-
-  _onFavourite(idFavourite) {
-    final job = jobs.firstWhereOrNull((job) => job.id == idFavourite);
-    final freelance =
-        freelanceJobs.firstWhereOrNull((job) => job.id == idFavourite);
-
-    if (job != null) {
-      context.router.push(
-        JobDetailsRoute(
-          job: job,
-        ),
-      );
-    } else if (freelance != null) {
-      context.router.push(
-        FreelanceDetailsRoute(job: freelance),
-      );
-    }
-  }
 }
 
 class _SwitchButton extends StatelessWidget {

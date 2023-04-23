@@ -19,10 +19,11 @@ abstract class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<JobsRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: JobsPage(
+        child: WrappedRoute(
+            child: JobsPage(
           key: args.key,
           initialPage: args.initialPage,
-        ),
+        )),
       );
     },
     HomeRoute.name: (routeData) {
@@ -35,10 +36,11 @@ abstract class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<JobDetailsRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: JobDetailsPage(
-          job: args.job,
+        child: WrappedRoute(
+            child: JobDetailsPage(
+          jobID: args.jobID,
           key: args.key,
-        ),
+        )),
       );
     },
     FreelanceDetailsRoute.name: (routeData) {
@@ -109,13 +111,13 @@ class HomeRoute extends PageRouteInfo<void> {
 /// [JobDetailsPage]
 class JobDetailsRoute extends PageRouteInfo<JobDetailsRouteArgs> {
   JobDetailsRoute({
-    required Job job,
+    required String jobID,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           JobDetailsRoute.name,
           args: JobDetailsRouteArgs(
-            job: job,
+            jobID: jobID,
             key: key,
           ),
           initialChildren: children,
@@ -129,17 +131,17 @@ class JobDetailsRoute extends PageRouteInfo<JobDetailsRouteArgs> {
 
 class JobDetailsRouteArgs {
   const JobDetailsRouteArgs({
-    required this.job,
+    required this.jobID,
     this.key,
   });
 
-  final Job job;
+  final String jobID;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'JobDetailsRouteArgs{job: $job, key: $key}';
+    return 'JobDetailsRouteArgs{jobID: $jobID, key: $key}';
   }
 }
 

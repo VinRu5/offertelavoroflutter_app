@@ -32,7 +32,7 @@ class _JobService implements JobService {
     )
             .compose(
               _dio.options,
-              '/283d2760f81548f0a7baca4b3e58d7d8/query',
+              '/databases/283d2760f81548f0a7baca4b3e58d7d8/query',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -55,12 +55,35 @@ class _JobService implements JobService {
     )
             .compose(
               _dio.options,
-              '/e6a8a6760e3d4430b20a15d16f75f92e/query',
+              '/databases/e6a8a6760e3d4430b20a15d16f75f92e/query',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = NotionResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<JobDTO> jobByID(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<JobDTO>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/pages/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = JobDTO.fromJson(_result.data!);
     return value;
   }
 

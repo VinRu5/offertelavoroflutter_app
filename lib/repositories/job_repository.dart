@@ -43,4 +43,16 @@ class JobRepository {
       rethrow;
     }
   }
+
+  Future<Job> jobByID(String id) async {
+    try {
+      final response = await jobService.jobByID(id);
+
+      return jobMapper.fromDTO(response);
+    } catch (e) {
+      logger.e("Error get job by id: $id");
+
+      rethrow;
+    }
+  }
 }

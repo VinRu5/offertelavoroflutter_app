@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
+import 'package:offertelavoroflutter_app/models/enum/job_type.dart';
 import 'package:offertelavoroflutter_app/models/favourite_job.dart';
-import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/drawer_content.dart';
+import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 
 class FavouriteList extends StatelessWidget {
   final List<FavouriteJob> favourites;
-  final OnFavouriteCallback? onFavourite;
   final bool shrinkWrap;
 
   const FavouriteList({
     super.key,
     required this.favourites,
     this.shrinkWrap = false,
-    this.onFavourite,
   });
 
   @override
@@ -33,8 +32,19 @@ class FavouriteList extends StatelessWidget {
             ListTile(
               onTap: () {
                 context.router.pop();
-                if (onFavourite != null) {
-                  onFavourite!(favourites[index].id);
+
+                if (favourites[index].jobType == JobType.office) {
+                  context.router.push(
+                    JobDetailsRoute(
+                      jobID: favourites[index].id,
+                    ),
+                  );
+                } else if (favourites[index].jobType == JobType.freelance) {
+                  // context.router.push(
+                  //   // FreelanceDetailsRoute(
+                  //   //   jobID: favourites[index].id,
+                  //   // ),
+                  // );
                 }
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),

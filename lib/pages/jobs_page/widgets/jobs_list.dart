@@ -72,7 +72,7 @@ class _JobsListContent extends StatelessWidget {
                   job: jobs[index],
                   onPressed: () {
                     context.router.push(
-                      JobDetailsRoute(job: jobs[index]),
+                      JobDetailsRoute(jobID: jobs[index].id),
                     );
                   },
                 ),
