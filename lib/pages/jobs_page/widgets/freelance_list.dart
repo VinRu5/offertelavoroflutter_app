@@ -75,7 +75,7 @@ class _FreelanceListContent extends StatelessWidget {
                   job: jobs[index],
                   onPressed: () {
                     context.router.push(
-                      FreelanceDetailsRoute(job: jobs[index]),
+                      FreelanceDetailsRoute(jobID: jobs[index].id),
                     );
                   },
                 ),

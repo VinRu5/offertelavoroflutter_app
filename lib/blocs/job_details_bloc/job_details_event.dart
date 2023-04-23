@@ -12,3 +12,9 @@ class FetchJobDetailsEvent extends JobDetailsEvent {
 
   const FetchJobDetailsEvent(this.jobID);
 }
+
+class FetchJobFreelanceDetailsEvent extends JobDetailsEvent {
+  final String jobID;
+
+  const FetchJobFreelanceDetailsEvent(this.jobID);
+}

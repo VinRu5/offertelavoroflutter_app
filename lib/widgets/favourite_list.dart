@@ -40,11 +40,11 @@ class FavouriteList extends StatelessWidget {
                     ),
                   );
                 } else if (favourites[index].jobType == JobType.freelance) {
-                  // context.router.push(
-                  //   // FreelanceDetailsRoute(
-                  //   //   jobID: favourites[index].id,
-                  //   // ),
-                  // );
+                  context.router.push(
+                    FreelanceDetailsRoute(
+                      jobID: favourites[index].id,
+                    ),
+                  );
                 }
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),

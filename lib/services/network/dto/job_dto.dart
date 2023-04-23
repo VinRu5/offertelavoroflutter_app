@@ -3,7 +3,6 @@ import 'package:offertelavoroflutter_app/services/network/dto/generic_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/icon_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/parent_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/properties_dto.dart';
-import 'package:offertelavoroflutter_app/services/network/dto/properties_freelance_dto.dart';
 import 'package:pine/dto/dto.dart';
 
 class JobDTO extends DTO with EquatableMixin {

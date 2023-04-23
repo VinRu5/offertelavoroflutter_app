@@ -17,6 +17,12 @@ class FetchedJobDetailsState extends JobDetailsState {
   const FetchedJobDetailsState(this.job);
 }
 
+class FetchedJobFreelanceDetailsState extends JobDetailsState {
+  final JobFreelance job;
+
+  const FetchedJobFreelanceDetailsState(this.job);
+}
+
 class ErrorJobDetailsState extends JobDetailsState {
   const ErrorJobDetailsState();
 }

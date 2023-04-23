@@ -47,10 +47,11 @@ abstract class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<FreelanceDetailsRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: FreelanceDetailsPage(
-          job: args.job,
+        child: WrappedRoute(
+            child: FreelanceDetailsPage(
+          jobID: args.jobID,
           key: args.key,
-        ),
+        )),
       );
     },
   };
@@ -149,13 +150,13 @@ class JobDetailsRouteArgs {
 /// [FreelanceDetailsPage]
 class FreelanceDetailsRoute extends PageRouteInfo<FreelanceDetailsRouteArgs> {
   FreelanceDetailsRoute({
-    required JobFreelance job,
+    required String jobID,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           FreelanceDetailsRoute.name,
           args: FreelanceDetailsRouteArgs(
-            job: job,
+            jobID: jobID,
             key: key,
           ),
           initialChildren: children,
@@ -169,16 +170,16 @@ class FreelanceDetailsRoute extends PageRouteInfo<FreelanceDetailsRouteArgs> {
 
 class FreelanceDetailsRouteArgs {
   const FreelanceDetailsRouteArgs({
-    required this.job,
+    required this.jobID,
     this.key,
   });
 
-  final JobFreelance job;
+  final String jobID;
 
   final Key? key;
 
   @override
   String toString() {
-    return 'FreelanceDetailsRouteArgs{job: $job, key: $key}';
+    return 'FreelanceDetailsRouteArgs{jobID: $jobID, key: $key}';
   }
 }
