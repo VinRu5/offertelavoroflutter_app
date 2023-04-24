@@ -35,7 +35,7 @@ class JobsPage extends StatefulWidget with AutoRouteWrapper {
           BlocProvider<JobListBloc>(
             create: (context) => JobListBloc(
               jobRepository: context.read<JobRepository>(),
-            )..fetchJobs(),
+            )..fetchFirstPageJobs(),
           ),
           BlocProvider<FreelanceListBloc>(
             create: (context) => FreelanceListBloc(
@@ -50,8 +50,10 @@ class JobsPage extends StatefulWidget with AutoRouteWrapper {
 class _JobsPageState extends State<JobsPage> {
   final PageController _pageController = PageController(initialPage: 0);
   bool isFreelance = false;
-  List<Job> jobs = [];
-  List<JobFreelance> freelanceJobs = [];
+  // List<Job> jobs = [];
+  // List<JobFreelance> freelanceJobs = [];
+  bool hasMoreJobs = false;
+  bool hasMoreFreelance = false;
   final List<Widget> _pages = const [
     JobsList(),
     FreelanceList(),
@@ -76,31 +78,30 @@ class _JobsPageState extends State<JobsPage> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocListener<JobListBloc, JobListState>(
-        listener: (context, state) {
-          if (state is NoJobListState) {
-            jobs = [];
-          }
-
-          if (state is FetchedJobListState) {
-            jobs = state.jobs;
-          }
-        },
-        child: BlocListener<FreelanceListBloc, FreelanceListState>(
-          listener: (context, state) {
-            if (state is NoFreelanceListState) {
-              freelanceJobs = [];
-            }
-
-            if (state is FetchedFreelanceListState) {
-              freelanceJobs = state.freelanceJobs;
-            }
-          },
-          child: Scaffold(
-            endDrawer: const Drawer(
-              child: DrawerContent(),
-            ),
-            body: NestedScrollView(
+  Widget build(BuildContext context) => MultiBlocListener(
+        listeners: [
+          BlocListener<JobListBloc, JobListState>(
+            listener: (context, state) {
+              if (state is FetchedJobListState) {
+                hasMoreJobs = state.hasMore;
+              }
+            },
+          ),
+          BlocListener<FreelanceListBloc, FreelanceListState>(
+            listener: (context, state) {
+              if (state is FetchedFreelanceListState) {
+                hasMoreFreelance = state.hasMore;
+              }
+            },
+          ),
+        ],
+        child: Scaffold(
+          endDrawer: const Drawer(
+            child: DrawerContent(),
+          ),
+          body: NotificationListener<ScrollEndNotification>(
+            onNotification: _onScrollJobsPage,
+            child: NestedScrollView(
               physics: const BouncingScrollPhysics(),
               headerSliverBuilder:
                   (BuildContext context, bool innerBoxIsScrolled) => [
@@ -152,6 +153,17 @@ class _JobsPageState extends State<JobsPage> {
           ),
         ),
       );
+
+  bool _onScrollJobsPage(ScrollEndNotification scrollEnd) {
+    final isBottom =
+        scrollEnd.metrics.pixels == scrollEnd.metrics.maxScrollExtent;
+
+    if (isBottom && (isFreelance ? hasMoreFreelance : hasMoreJobs)) {
+      context.read<JobListBloc>().fetchMoreJobs();
+    }
+
+    return true;
+  }
 }
 
 class _SwitchButton extends StatelessWidget {

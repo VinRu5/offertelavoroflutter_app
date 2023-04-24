@@ -23,11 +23,14 @@ class FreelanceListBloc extends Bloc<FreelanceListEvent, FreelanceListState> {
     emit(const FetchingFreelanceListState());
 
     try {
-      final freelanceJobs = await jobRepository.allFreelance;
+      final freelanceJobs = await jobRepository.firstListFreelance;
 
       emit(
         freelanceJobs.isNotEmpty
-            ? FetchedFreelanceListState(freelanceJobs)
+            ? FetchedFreelanceListState(
+                freelanceJobs: freelanceJobs,
+                hasMore: jobRepository.hasMoreFreelance,
+              )
             : const NoFreelanceListState(),
       );
     } catch (e) {

@@ -14,19 +14,44 @@ class JobListBloc extends Bloc<JobListEvent, JobListState> {
   JobListBloc({required this.jobRepository})
       : super(const FetchingJobListState()) {
     on<FetchJobListEvent>(_onFetchJobListEvent);
+    on<FetchMoreJobListEvent>(_onFetchMoreJobListEvent);
   }
 
-  fetchJobs() => add(const FetchJobListEvent());
+  fetchFirstPageJobs() => add(const FetchJobListEvent());
+  fetchMoreJobs() => add(const FetchMoreJobListEvent());
 
   FutureOr<void> _onFetchJobListEvent(
       JobListEvent event, Emitter<JobListState> emit) async {
     emit(const FetchingJobListState());
 
     try {
-      final List<Job> jobs = await jobRepository.allJobs;
+      final List<Job> jobs = await jobRepository.firstListJobs;
 
       emit(
-        jobs.isNotEmpty ? FetchedJobListState(jobs) : const NoJobListState(),
+        jobs.isNotEmpty
+            ? FetchedJobListState(
+                jobs: jobs,
+                hasMore: jobRepository.hasMoreJob,
+              )
+            : const NoJobListState(),
+      );
+    } catch (e) {
+      emit(const ErrorJobListState());
+    }
+  }
+
+  FutureOr<void> _onFetchMoreJobListEvent(
+      FetchMoreJobListEvent event, Emitter<JobListState> emit) async {
+    try {
+      final List<Job> jobs = await jobRepository.fetchAnotherJobs;
+
+      emit(
+        jobs.isNotEmpty
+            ? FetchedJobListState(
+                jobs: jobs,
+                hasMore: jobRepository.hasMoreJob,
+              )
+            : const NoJobListState(),
       );
     } catch (e) {
       emit(const ErrorJobListState());

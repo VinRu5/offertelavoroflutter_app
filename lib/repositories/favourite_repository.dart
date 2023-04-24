@@ -24,9 +24,9 @@ class FavouriteRepository {
   Future<List<FavouriteJob>> checkAvailable() async {
     try {
       final Iterable<String> jobs =
-          (await jobRepository.allJobs).map((e) => e.id);
+          (await jobRepository.firstListJobs).map((e) => e.id);
       final Iterable<String> freelance =
-          (await jobRepository.allFreelance).map((e) => e.id);
+          (await jobRepository.firstListFreelance).map((e) => e.id);
 
       for (final job in favourites) {
         if (!jobs.contains(job.id) && !freelance.contains(job.id)) {

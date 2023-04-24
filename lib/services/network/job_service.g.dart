@@ -19,11 +19,12 @@ class _JobService implements JobService {
   String? baseUrl;
 
   @override
-  Future<NotionResponse> allJob() async {
+  Future<NotionResponse> fetchJobList(request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<NotionResponse>(Options(
       method: 'POST',
@@ -42,11 +43,12 @@ class _JobService implements JobService {
   }
 
   @override
-  Future<NotionResponse> allFreelance() async {
+  Future<NotionResponse> fetchFreelanceList(request) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<NotionResponse>(Options(
       method: 'POST',

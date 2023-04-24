@@ -3,17 +3,20 @@ import 'package:offertelavoroflutter_app/models/job.dart';
 import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 import 'package:offertelavoroflutter_app/repositories/mapper/freelance_mapper.dart';
 import 'package:offertelavoroflutter_app/repositories/mapper/job_mapper.dart';
-import 'package:offertelavoroflutter_app/services/network/dto/job_dto.dart';
+import 'package:offertelavoroflutter_app/services/network/dto/query_notion_request.dart';
 import 'package:offertelavoroflutter_app/services/network/job_service.dart';
 
 class JobRepository {
-  static const _jobDtoKey = "job_dto";
-  static const _isJobKey = "is_job";
-
   final JobService jobService;
   final JobMapper jobMapper;
   final FreelanceMapper freelanceMapper;
   final Logger logger;
+  bool _hasMoreJob = false;
+  bool _hasMoreFreelance = false;
+  List<Job> _jobList = [];
+  List<JobFreelance> _freelanceList = [];
+  String? _cursorJob;
+  String? _cursorFreelance;
 
   JobRepository({
     required this.jobService,
@@ -22,11 +25,20 @@ class JobRepository {
     required this.logger,
   });
 
-  Future<List<Job>> get allJobs async {
-    try {
-      final response = await jobService.allJob();
+  bool get hasMoreJob => _hasMoreJob;
+  bool get hasMoreFreelance => _hasMoreFreelance;
 
-      return response.results.map(jobMapper.fromDTO).toList(growable: false);
+  Future<List<Job>> get firstListJobs async {
+    try {
+      final response = await jobService.fetchJobList(QueryNotionRequest());
+
+      _jobList =
+          response.results.map(jobMapper.fromDTO).toList(growable: false);
+      _hasMoreJob = response.hasMore ?? false;
+
+      _cursorJob = _hasMoreJob ? response.nextCursor : null;
+
+      return _jobList;
     } catch (e) {
       logger.e("Error get all jobs");
 
@@ -34,13 +46,41 @@ class JobRepository {
     }
   }
 
-  Future<List<JobFreelance>> get allFreelance async {
+  Future<List<Job>> get fetchAnotherJobs async {
     try {
-      final response = await jobService.allFreelance();
+      final response = await jobService
+          .fetchJobList(QueryNotionRequest(startCursor: _cursorJob));
 
-      return response.results
-          .map(freelanceMapper.fromDTO)
-          .toList(growable: false);
+      final newList =
+          response.results.map(jobMapper.fromDTO).toList(growable: false);
+
+      _jobList = [..._jobList, ...newList];
+
+      _hasMoreJob = response.hasMore ?? false;
+
+      _cursorJob = _hasMoreJob ? response.nextCursor : null;
+
+      return _jobList;
+    } catch (e) {
+      logger.e("Error get all jobs");
+
+      rethrow;
+    }
+  }
+
+  Future<List<JobFreelance>> get firstListFreelance async {
+    try {
+      final response =
+          await jobService.fetchFreelanceList(QueryNotionRequest());
+
+      _hasMoreFreelance = response.hasMore ?? false;
+
+      _cursorFreelance = _hasMoreFreelance ? response.nextCursor : null;
+
+      _freelanceList =
+          response.results.map(freelanceMapper.fromDTO).toList(growable: false);
+
+      return _freelanceList;
     } catch (e) {
       logger.e("Error get all freelance");
 
@@ -48,35 +88,27 @@ class JobRepository {
     }
   }
 
-  // Future<Map<String, dynamic>> _getJobDTO(String id) async {
-  //   try {
-  //     final response = await jobService.jobByID(id);
+  Future<List<JobFreelance>> get fetchAnotherFreelance async {
+    try {
+      final response = await jobService
+          .fetchFreelanceList(QueryNotionRequest(startCursor: _cursorJob));
 
-  //     final isJob = response.properties?.tempistiche == null &&
-  //             response.properties?.richiestaDiLavoro == null &&
-  //             response.properties?.budget == null &&
-  //             response.properties?.nda == null &&
-  //             response.properties?.codice == null &&
-  //             response.properties?.tempisticheDiPagamento == null &&
-  //             response.properties?.descrizioneDelProgetto == null &&
-  //             response.properties?.tipoDiRelazione == null
-  //         ? true
-  //         : false;
+      final newList =
+          response.results.map(freelanceMapper.fromDTO).toList(growable: false);
 
-  //         if(isJob) {
+      _freelanceList = [..._freelanceList, ...newList];
 
-  //         }
+      _hasMoreFreelance = response.hasMore ?? false;
 
-  //     return {
-  //       _jobDtoKey: response,
-  //       _isJobKey: isJob,
-  //     };
-  //   } catch (e) {
-  //     logger.e("Error get job by id: $id");
+      _cursorFreelance = _hasMoreFreelance ? response.nextCursor : null;
 
-  //     rethrow;
-  //   }
-  // }
+      return _freelanceList;
+    } catch (e) {
+      logger.e("Error get all jobs");
+
+      rethrow;
+    }
+  }
 
   Future<Job> jobByID(String id) async {
     try {

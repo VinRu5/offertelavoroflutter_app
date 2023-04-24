@@ -13,8 +13,12 @@ class FetchingFreelanceListState extends FreelanceListState {
 
 class FetchedFreelanceListState extends FreelanceListState {
   final List<JobFreelance> freelanceJobs;
+  final bool hasMore;
 
-  const FetchedFreelanceListState(this.freelanceJobs);
+  const FetchedFreelanceListState({
+    required this.freelanceJobs,
+    required this.hasMore,
+  });
 }
 
 class NoFreelanceListState extends FreelanceListState {

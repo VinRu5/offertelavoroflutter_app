@@ -13,8 +13,12 @@ class FetchingJobListState extends JobListState {
 
 class FetchedJobListState extends JobListState {
   final List<Job> jobs;
+  final bool hasMore;
 
-  const FetchedJobListState(this.jobs);
+  const FetchedJobListState({
+    required this.jobs,
+    required this.hasMore,
+  });
 
   @override
   List<Object> get props => [jobs];

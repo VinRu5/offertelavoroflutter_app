@@ -10,3 +10,7 @@ abstract class JobListEvent extends Equatable {
 class FetchJobListEvent extends JobListEvent {
   const FetchJobListEvent();
 }
+
+class FetchMoreJobListEvent extends JobListEvent {
+  const FetchMoreJobListEvent();
+}
