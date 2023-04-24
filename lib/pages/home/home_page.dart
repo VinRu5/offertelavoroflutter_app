@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
-import 'package:offertelavoroflutter_app/pages/jobs_page/jobs_page.dart';
 import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:offertelavoroflutter_app/widgets/clickable_card.dart';
@@ -28,13 +26,11 @@ class HomePage extends StatelessWidget {
 }
 
 class _ContentHome extends StatelessWidget {
-  const _ContentHome({super.key});
+  const _ContentHome();
 
   @override
   Widget build(BuildContext context) => ListView(
         physics: const BouncingScrollPhysics(),
-        // mainAxisAlignment: MainAxisAlignment.start,
-        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             decoration: const BoxDecoration(
@@ -155,7 +151,7 @@ class _ContentHome extends StatelessWidget {
 }
 
 class _BottomButtom extends StatelessWidget {
-  const _BottomButtom({super.key});
+  const _BottomButtom();
 
   @override
   Widget build(BuildContext context) => SafeArea(

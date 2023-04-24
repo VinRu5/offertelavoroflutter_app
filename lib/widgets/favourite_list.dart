@@ -27,90 +27,45 @@ class FavouriteList extends StatelessWidget {
         padding: EdgeInsets.zero,
         itemCount: favourites.length,
         separatorBuilder: (_, __) => const Divider(),
-        itemBuilder: (context, index) => Stack(
-          children: [
-            ListTile(
-              onTap: () {
-                context.router.pop();
+        itemBuilder: (context, index) => ListTile(
+          onTap: () {
+            context.router.pop();
 
-                if (favourites[index].jobType == JobType.office) {
-                  context.router.push(
-                    JobDetailsRoute(
-                      jobID: favourites[index].id,
-                    ),
-                  );
-                } else if (favourites[index].jobType == JobType.freelance) {
-                  context.router.push(
-                    FreelanceDetailsRoute(
-                      jobID: favourites[index].id,
-                    ),
-                  );
-                }
-              },
-              contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-              dense: false,
-              horizontalTitleGap: 0,
-              title: Text(favourites[index].position),
-              subtitle: Text(favourites[index].company),
-              leading: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(favourites[index].emoji),
-                ],
-              ),
-              trailing: IconButton(
-                icon: const FaIcon(
-                  FontAwesomeIcons.solidCircleXmark,
-                  color: AppColors.red,
+            if (favourites[index].jobType == JobType.office) {
+              context.router.push(
+                JobDetailsRoute(
+                  jobID: favourites[index].id,
                 ),
-                onPressed: () => context
-                    .read<FavouriteJobBloc>()
-                    .removeFavourite(favourites[index]),
-              ),
+              );
+            } else if (favourites[index].jobType == JobType.freelance) {
+              context.router.push(
+                FreelanceDetailsRoute(
+                  jobID: favourites[index].id,
+                ),
+              );
+            }
+          },
+          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+          dense: false,
+          horizontalTitleGap: 0,
+          title: Text(favourites[index].position),
+          subtitle: Text(favourites[index].company),
+          leading: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(favourites[index].emoji),
+            ],
+          ),
+          trailing: IconButton(
+            icon: const FaIcon(
+              FontAwesomeIcons.solidCircleXmark,
+              color: AppColors.red,
             ),
-            Visibility(
-              visible: !favourites[index].isAvailable,
-              child: Positioned(
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.gray.withAlpha(240),
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Annuncio non più disponibile",
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppColors.white,
-                            ),
-                      ),
-                      const SizedBox(height: 4.0),
-                      GestureDetector(
-                        onTap: () => context
-                            .read<FavouriteJobBloc>()
-                            .removeFavourite(favourites[index]),
-                        child: Text(
-                          "Elimina",
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: AppColors.white,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
+            onPressed: () => context
+                .read<FavouriteJobBloc>()
+                .removeFavourite(favourites[index]),
+          ),
         ),
       );
 }

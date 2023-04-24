@@ -1,10 +1,8 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
-import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/theme/cubit/theme_cubit.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:offertelavoroflutter_app/theme/models/theme.dart';

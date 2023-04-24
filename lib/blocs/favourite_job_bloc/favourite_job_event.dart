@@ -18,7 +18,3 @@ class RemoveFavouriteJobEvent extends FavouriteJobEvent {
 
   const RemoveFavouriteJobEvent(this.job);
 }
-
-class GetFavouriteJobEvent extends FavouriteJobEvent {
-  const GetFavouriteJobEvent();
-}

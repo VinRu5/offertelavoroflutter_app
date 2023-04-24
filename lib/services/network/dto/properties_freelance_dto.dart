@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/rich_text_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/select_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/title_dto.dart';
-import 'package:offertelavoroflutter_app/services/network/dto/url_dto.dart';
 import 'package:pine/dto/dto.dart';
 
 class PropertiesFreelanceDTO extends DTO with EquatableMixin {

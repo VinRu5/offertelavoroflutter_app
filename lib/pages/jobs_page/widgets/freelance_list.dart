@@ -4,16 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/freelance_list_bloc/freelance_list_bloc.dart';
-import 'package:offertelavoroflutter_app/blocs/job_list_bloc/job_list_bloc.dart';
-import 'package:offertelavoroflutter_app/models/enum/contract_type.dart';
 import 'package:offertelavoroflutter_app/models/enum/relationship.dart';
-import 'package:offertelavoroflutter_app/models/enum/seniority.dart';
-import 'package:offertelavoroflutter_app/models/enum/team_location.dart';
 import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/models/job_freelance.dart';
-import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
+import 'package:offertelavoroflutter_app/widgets/card_notification.dart';
 import 'package:offertelavoroflutter_app/widgets/flutter_job_loader.dart';
 import 'package:offertelavoroflutter_app/widgets/tag_color.dart';
 
@@ -37,11 +33,19 @@ class FreelanceList extends StatelessWidget {
           }
 
           if (state is NoFreelanceListState) {
-            return Text('Nessun lavoro');
+            return const CardNotification(
+              title: "Ci dispiace!",
+              message:
+                  "Non sono presenti annunci al momento. Riprova più tardi.",
+            );
           }
 
           if (state is ErrorFreelanceListState) {
-            return Text('Errore di caricamento');
+            return const CardNotification(
+              title: "Si è verificato un errore",
+              message: "Non è possibile caricare o trovare gli annunci.",
+              error: true,
+            );
           }
 
           return const SizedBox();
@@ -54,7 +58,6 @@ class _FreelanceListContent extends StatelessWidget {
 
   const _FreelanceListContent({
     required this.jobs,
-    super.key,
   });
 
   @override
@@ -131,7 +134,6 @@ class _FreelanceTile extends StatelessWidget {
   const _FreelanceTile({
     required this.job,
     this.onPressed,
-    super.key,
   });
 
   @override

@@ -14,8 +14,10 @@ import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/repositories/url_launcher_repository.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:offertelavoroflutter_app/widgets/card_notification.dart';
 import 'package:offertelavoroflutter_app/widgets/error_popup_widget.dart';
 import 'package:offertelavoroflutter_app/widgets/flutter_job_loader.dart';
+import 'package:offertelavoroflutter_app/widgets/job_flutter_button.dart';
 
 @RoutePage()
 class FreelanceDetailsPage extends StatelessWidget with AutoRouteWrapper {
@@ -49,8 +51,10 @@ class FreelanceDetailsPage extends StatelessWidget with AutoRouteWrapper {
             }
 
             if (state is ErrorJobDetailsState) {
-              return const Center(
-                child: Text("Errore nel caricamento"),
+              return const CardNotification(
+                title: "Si è verificato un errore",
+                message: "Non è possibile caricare o trovare l'annuncio.",
+                error: true,
               );
             }
 
@@ -70,7 +74,6 @@ class _FreelanceDetailsContent extends StatelessWidget {
   final JobFreelance job;
 
   const _FreelanceDetailsContent({
-    super.key,
     required this.job,
   });
 
@@ -142,64 +145,87 @@ class _FreelanceDetailsContent extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  RichTextRow(
-                    label: "Descrizione del progetto",
-                    texts: job.description,
-                  ),
-                  RichTextRow(
-                    label: "Richiesta di lavoro",
-                    texts: job.jobApplication,
-                  ),
-                  SelectRow(
-                    label: "Tipo di relazione",
-                    selectLabel: job.relationship.getString,
-                    backgroundColor: job.relationship.color,
-                    color: job.relationship.colorText,
-                  ),
-                  TextRow(
-                    label: "Tempistiche",
-                    text: job.timelines,
-                  ),
-                  TextRow(
-                    label: "Budget",
-                    text: job.budget,
-                  ),
-                  TextRow(
-                    label: "Tempistiche di pagamento",
-                    text: job.paymentTiming,
-                  ),
-                  TextRow(
-                    label: "NDA",
-                    text: job.nda ? "Si" : "No",
-                  ),
-                  TextRow(
-                    label: "Come candidarsi",
-                    text: job.toApply,
-                    underline: true,
-                    onPressed: () async {
-                      try {
-                        await context
-                            .read<UrlLauncherRepository>()
-                            .launchMyUrl(job.toApply);
-                      } catch (e) {
-                        _showErrorModal(
-                          context,
-                          e is ErrorLauncher
-                              ? e.text ?? ''
-                              : 'C\'è stato un errore',
-                        );
-                      }
-                    },
-                  ),
-                  TextRow(
-                    label: "Job Posted",
-                    text: DateFormat("dd/MM/y  H:m").format(job.jobPosted),
-                  ),
-                  const SizedBox(height: 40.0),
-                ],
-              ),
+              child: job.archived
+                  ? CardNotification(
+                      title: "Ci dispiace!",
+                      message:
+                          "Questo annuncio non è più disponibile se vuoi puoi eliminarlo dai preferiti",
+                      child: JobFlutterButton(
+                        child: Text(
+                          "Elimina",
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: AppColors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                        ),
+                        onPressed: () {
+                          context.read<FavouriteJobBloc>().removeFavourite(
+                                FavouriteJob.fromFreelance(job),
+                              );
+                          context.router.pop();
+                        },
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        RichTextRow(
+                          label: "Descrizione del progetto",
+                          texts: job.description,
+                        ),
+                        RichTextRow(
+                          label: "Richiesta di lavoro",
+                          texts: job.jobApplication,
+                        ),
+                        SelectRow(
+                          label: "Tipo di relazione",
+                          selectLabel: job.relationship.getString,
+                          backgroundColor: job.relationship.color,
+                          color: job.relationship.colorText,
+                        ),
+                        TextRow(
+                          label: "Tempistiche",
+                          text: job.timelines,
+                        ),
+                        TextRow(
+                          label: "Budget",
+                          text: job.budget,
+                        ),
+                        TextRow(
+                          label: "Tempistiche di pagamento",
+                          text: job.paymentTiming,
+                        ),
+                        TextRow(
+                          label: "NDA",
+                          text: job.nda ? "Si" : "No",
+                        ),
+                        TextRow(
+                          label: "Come candidarsi",
+                          text: job.toApply,
+                          underline: true,
+                          onPressed: () async {
+                            try {
+                              await context
+                                  .read<UrlLauncherRepository>()
+                                  .launchMyUrl(job.toApply);
+                            } catch (e) {
+                              _showErrorModal(
+                                context,
+                                e is ErrorLauncher
+                                    ? e.text ?? ''
+                                    : 'C\'è stato un errore',
+                              );
+                            }
+                          },
+                        ),
+                        TextRow(
+                          label: "Job Posted",
+                          text:
+                              DateFormat("dd/MM/y  H:m").format(job.jobPosted),
+                        ),
+                        const SizedBox(height: 40.0),
+                      ],
+                    ),
             ),
           ),
         ],

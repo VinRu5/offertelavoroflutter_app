@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
-import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/repositories/favourite_repository.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/repositories/mapper/freelance_mapper.dart';

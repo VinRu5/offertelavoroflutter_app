@@ -16,8 +16,10 @@ import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/repositories/url_launcher_repository.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:offertelavoroflutter_app/widgets/card_notification.dart';
 import 'package:offertelavoroflutter_app/widgets/error_popup_widget.dart';
 import 'package:offertelavoroflutter_app/widgets/flutter_job_loader.dart';
+import 'package:offertelavoroflutter_app/widgets/job_flutter_button.dart';
 
 @RoutePage()
 class JobDetailsPage extends StatelessWidget with AutoRouteWrapper {
@@ -51,8 +53,10 @@ class JobDetailsPage extends StatelessWidget with AutoRouteWrapper {
             }
 
             if (state is ErrorJobDetailsState) {
-              return const Center(
-                child: Text("Errore nel caricamento"),
+              return const CardNotification(
+                title: "Si è verificato un errore",
+                message: "Non è possibile caricare o trovare l'annuncio.",
+                error: true,
               );
             }
 
@@ -71,7 +75,6 @@ class _JobDetailsContent extends StatelessWidget {
 
   const _JobDetailsContent({
     required this.job,
-    super.key,
   });
 
   @override
@@ -143,82 +146,105 @@ class _JobDetailsContent extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextRow(
-                    label: "Nome azienda",
-                    text: job.company,
-                  ),
-                  TextRow(
-                    label: "URL sito web",
-                    text: job.website,
-                  ),
-                  TextRow(
-                    label: "Qualifica",
-                    text: job.qualification.isNotEmpty
-                        ? job.qualification
-                        : job.title,
-                  ),
-                  SelectRow(
-                    label: "Seniority",
-                    selectLabel: job.seniority.getString,
-                    backgroundColor: job.seniority.color,
-                    color: job.seniority.colorText,
-                  ),
-                  SelectRow(
-                    label: "Team",
-                    selectLabel: job.team.getString,
-                    backgroundColor: job.team.color,
-                    color: job.team.colorText,
-                  ),
-                  SelectRow(
-                    label: "Contratto",
-                    selectLabel: job.contract.getString,
-                    backgroundColor: job.contract.color,
-                    color: job.contract.colorText,
-                  ),
-                  TextRow(
-                    label: "RAL",
-                    text: job.ral,
-                  ),
-                  RichTextRow(
-                    label: "Descrizione offerta",
-                    texts: job.description,
-                  ),
-                  TextRow(
-                    label: "Come candidarsi",
-                    text: job.toApply,
-                    underline: true,
-                    onPressed: () async {
-                      try {
-                        await context
-                            .read<UrlLauncherRepository>()
-                            .launchMyUrl(job.toApply);
-                      } catch (e) {
-                        _showErrorModal(
-                          context,
-                          e is ErrorLauncher
-                              ? e.text ?? ''
-                              : 'C\'è stato un errore',
-                        );
-                      }
-                    },
-                  ),
-                  TextRow(
-                    label: "Job Posted",
-                    text: DateFormat("dd/MM/y  H:m").format(job.jobPosted),
-                  ),
-                  TextRow(
-                    label: "Località",
-                    text: job.location,
-                  ),
-                  TextRow(
-                    label: "Stato di pubblicazione",
-                    text: job.publicationStatus,
-                  ),
-                  const SizedBox(height: 40.0),
-                ],
-              ),
+              child: job.archived
+                  ? CardNotification(
+                      title: "Ci dispiace!",
+                      message:
+                          "Questo annuncio non è più disponibile se vuoi puoi eliminarlo dai preferiti",
+                      child: JobFlutterButton(
+                        child: Text(
+                          "Elimina",
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: AppColors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                        ),
+                        onPressed: () {
+                          context.read<FavouriteJobBloc>().removeFavourite(
+                                FavouriteJob.fromJob(job),
+                              );
+                          context.router.pop();
+                        },
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        TextRow(
+                          label: "Nome azienda",
+                          text: job.company,
+                        ),
+                        TextRow(
+                          label: "URL sito web",
+                          text: job.website,
+                        ),
+                        TextRow(
+                          label: "Qualifica",
+                          text: job.qualification.isNotEmpty
+                              ? job.qualification
+                              : job.title,
+                        ),
+                        SelectRow(
+                          label: "Seniority",
+                          selectLabel: job.seniority.getString,
+                          backgroundColor: job.seniority.color,
+                          color: job.seniority.colorText,
+                        ),
+                        SelectRow(
+                          label: "Team",
+                          selectLabel: job.team.getString,
+                          backgroundColor: job.team.color,
+                          color: job.team.colorText,
+                        ),
+                        SelectRow(
+                          label: "Contratto",
+                          selectLabel: job.contract.getString,
+                          backgroundColor: job.contract.color,
+                          color: job.contract.colorText,
+                        ),
+                        TextRow(
+                          label: "RAL",
+                          text: job.ral,
+                        ),
+                        RichTextRow(
+                          label: "Descrizione offerta",
+                          texts: job.description,
+                        ),
+                        TextRow(
+                          label: "Come candidarsi",
+                          text: job.toApply,
+                          underline: true,
+                          onPressed: () async {
+                            try {
+                              await context
+                                  .read<UrlLauncherRepository>()
+                                  .launchMyUrl(job.toApply);
+                            } catch (e) {
+                              _showErrorModal(
+                                context,
+                                e is ErrorLauncher
+                                    ? e.text ?? ''
+                                    : 'C\'è stato un errore',
+                              );
+                            }
+                          },
+                        ),
+                        TextRow(
+                          label: "Job Posted",
+                          text:
+                              DateFormat("dd/MM/y  H:m").format(job.jobPosted),
+                        ),
+                        TextRow(
+                          label: "Località",
+                          text: job.location,
+                        ),
+                        TextRow(
+                          label: "Stato di pubblicazione",
+                          text: job.publicationStatus,
+                        ),
+                        const SizedBox(height: 40.0),
+                      ],
+                    ),
             ),
           ),
         ],

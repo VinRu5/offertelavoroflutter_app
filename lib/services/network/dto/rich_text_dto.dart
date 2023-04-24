@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/property_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/text_dto.dart';
-import 'package:pine/dto/dto.dart';
 
 class RichTextDTO extends PropertyDTO with EquatableMixin {
   static const _richTextKey = "rich_text";

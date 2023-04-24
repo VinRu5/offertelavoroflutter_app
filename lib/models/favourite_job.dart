@@ -9,15 +9,13 @@ class FavouriteJob extends Equatable {
   final String position;
   final String emoji;
   final JobType jobType;
-  bool isAvailable;
 
-  FavouriteJob({
+  const FavouriteJob({
     required this.id,
     this.company = '',
     this.position = '',
     this.emoji = '',
     required this.jobType,
-    this.isAvailable = true,
   });
 
   factory FavouriteJob.fromJob(Job job) => FavouriteJob(

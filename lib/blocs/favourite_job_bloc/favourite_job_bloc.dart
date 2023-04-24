@@ -17,7 +17,6 @@ class FavouriteJobBloc
   static const _positionKey = "position";
   static const _emojiKey = "emoji";
   static const _jobTypeKey = "job_type";
-  static const _isAvailableKey = "available";
 
   final FavouriteRepository favouriteRepository;
 
@@ -25,7 +24,6 @@ class FavouriteJobBloc
       : super(const NoFavouriteJobState()) {
     on<AddFavouriteJobEvent>(_onAddFavouriteJobEvent);
     on<RemoveFavouriteJobEvent>(_onRemoveFavouriteJobEvent);
-    on<GetFavouriteJobEvent>(_onGetFavouriteJobEvent);
   }
 
   @override
@@ -41,7 +39,6 @@ class FavouriteJobBloc
               jobType: JobType.values.firstWhere(
                 (element) => element.name == jsonJob[_jobTypeKey],
               ),
-              isAvailable: jsonJob[_isAvailableKey],
             ),
           )
           .toList(growable: false);
@@ -65,7 +62,6 @@ class FavouriteJobBloc
                   _positionKey: job.position,
                   _emojiKey: job.emoji,
                   _jobTypeKey: job.jobType.name,
-                  _isAvailableKey: job.isAvailable,
                 })
             .toList(growable: false),
       };
@@ -79,8 +75,6 @@ class FavouriteJobBloc
   void addFavourite(FavouriteJob job) => add(AddFavouriteJobEvent(job));
 
   void removeFavourite(FavouriteJob job) => add(RemoveFavouriteJobEvent(job));
-
-  void getFavourite() => add(const GetFavouriteJobEvent());
 
   FutureOr<void> _onAddFavouriteJobEvent(
       AddFavouriteJobEvent event, Emitter<FavouriteJobState> emit) {
@@ -106,23 +100,5 @@ class FavouriteJobBloc
           ? LoadedFavouriteJobState(favouriteJob)
           : const NoFavouriteJobState(),
     );
-  }
-
-  FutureOr<void> _onGetFavouriteJobEvent(
-      GetFavouriteJobEvent event, Emitter<FavouriteJobState> emit) async {
-    print("get");
-    emit(const LoadingFavouriteJobState());
-
-    try {
-      final favouriteJob = await favouriteRepository.checkAvailable();
-
-      emit(
-        favouriteJob.isNotEmpty
-            ? LoadedFavouriteJobState(favouriteJob)
-            : const NoFavouriteJobState(),
-      );
-    } catch (e) {
-      emit(const ErrorFavouriteJobState());
-    }
   }
 }

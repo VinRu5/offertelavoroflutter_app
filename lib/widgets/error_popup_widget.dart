@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
-import 'package:offertelavoroflutter_app/widgets/job_flutter_button.dart';
 
 class ErrorPopupWidget extends StatelessWidget {
   final VoidCallback? onConfirm;

@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:offertelavoroflutter_app/blocs/favourite_job_bloc/favourite_job_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/freelance_list_bloc/freelance_list_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/job_list_bloc/job_list_bloc.dart';
 import 'package:offertelavoroflutter_app/misc/bubble_indicator_painter.dart';
-import 'package:offertelavoroflutter_app/models/job.dart';
-import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/drawer_content.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/freelance_list.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/jobs_list.dart';
@@ -50,8 +47,6 @@ class JobsPage extends StatefulWidget with AutoRouteWrapper {
 class _JobsPageState extends State<JobsPage> {
   final PageController _pageController = PageController(initialPage: 0);
   bool isFreelance = false;
-  // List<Job> jobs = [];
-  // List<JobFreelance> freelanceJobs = [];
   bool hasMoreJobs = false;
   bool hasMoreFreelance = false;
   final List<Widget> _pages = const [
@@ -171,7 +166,6 @@ class _SwitchButton extends StatelessWidget {
   final bool isFreelance;
 
   const _SwitchButton({
-    super.key,
     required this.controller,
     this.isFreelance = false,
   });
@@ -259,7 +253,6 @@ class _PageViews extends StatelessWidget {
   final List<Widget> pages;
 
   const _PageViews({
-    super.key,
     required this.controller,
     required this.onChangePage,
     required this.pages,

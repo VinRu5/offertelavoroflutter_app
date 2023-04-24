@@ -9,9 +9,9 @@ import 'package:offertelavoroflutter_app/models/enum/seniority.dart';
 import 'package:offertelavoroflutter_app/models/enum/team_location.dart';
 import 'package:offertelavoroflutter_app/models/favourite_job.dart';
 import 'package:offertelavoroflutter_app/models/job.dart';
-import 'package:offertelavoroflutter_app/repositories/favourite_repository.dart';
 import 'package:offertelavoroflutter_app/routers/app_router.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
+import 'package:offertelavoroflutter_app/widgets/card_notification.dart';
 import 'package:offertelavoroflutter_app/widgets/flutter_job_loader.dart';
 import 'package:offertelavoroflutter_app/widgets/tag_color.dart';
 
@@ -34,11 +34,19 @@ class JobsList extends StatelessWidget {
           }
 
           if (state is NoJobListState) {
-            return Text('Nessun lavoro');
+            return const CardNotification(
+              title: "Ci dispiace!",
+              message:
+                  "Non sono presenti annunci al momento. Riprova più tardi.",
+            );
           }
 
           if (state is ErrorJobListState) {
-            return Text('Errore di caricamento');
+            return const CardNotification(
+              title: "Si è verificato un errore",
+              message: "Non è possibile caricare o trovare gli annunci.",
+              error: true,
+            );
           }
 
           return const SizedBox();
@@ -51,7 +59,6 @@ class _JobsListContent extends StatelessWidget {
 
   const _JobsListContent({
     required this.jobs,
-    super.key,
   });
 
   @override
@@ -128,7 +135,6 @@ class _JobTile extends StatelessWidget {
   const _JobTile({
     required this.job,
     this.onPressed,
-    super.key,
   });
 
   @override

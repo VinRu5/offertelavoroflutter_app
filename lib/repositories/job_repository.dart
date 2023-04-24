@@ -30,7 +30,9 @@ class JobRepository {
 
   Future<List<Job>> get firstListJobs async {
     try {
-      final response = await jobService.fetchJobList(QueryNotionRequest());
+      final response = await jobService.fetchJobList(
+        QueryNotionRequest(),
+      );
 
       _jobList =
           response.results.map(jobMapper.fromDTO).toList(growable: false);
@@ -48,8 +50,9 @@ class JobRepository {
 
   Future<List<Job>> get fetchAnotherJobs async {
     try {
-      final response = await jobService
-          .fetchJobList(QueryNotionRequest(startCursor: _cursorJob));
+      final response = await jobService.fetchJobList(
+        QueryNotionRequest(startCursor: _cursorJob),
+      );
 
       final newList =
           response.results.map(jobMapper.fromDTO).toList(growable: false);
@@ -70,8 +73,9 @@ class JobRepository {
 
   Future<List<JobFreelance>> get firstListFreelance async {
     try {
-      final response =
-          await jobService.fetchFreelanceList(QueryNotionRequest());
+      final response = await jobService.fetchFreelanceList(
+        QueryNotionRequest(),
+      );
 
       _hasMoreFreelance = response.hasMore ?? false;
 
@@ -90,8 +94,9 @@ class JobRepository {
 
   Future<List<JobFreelance>> get fetchAnotherFreelance async {
     try {
-      final response = await jobService
-          .fetchFreelanceList(QueryNotionRequest(startCursor: _cursorJob));
+      final response = await jobService.fetchFreelanceList(
+        QueryNotionRequest(startCursor: _cursorFreelance),
+      );
 
       final newList =
           response.results.map(freelanceMapper.fromDTO).toList(growable: false);

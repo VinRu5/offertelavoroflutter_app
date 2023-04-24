@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:offertelavoroflutter_app/models/job_freelance.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
