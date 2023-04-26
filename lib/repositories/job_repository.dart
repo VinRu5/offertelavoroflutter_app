@@ -1,14 +1,21 @@
 import 'package:logger/logger.dart';
+import 'package:offertelavoroflutter_app/models/enum/sort_type.dart';
+import 'package:offertelavoroflutter_app/models/filters.dart';
 import 'package:offertelavoroflutter_app/models/job.dart';
 import 'package:offertelavoroflutter_app/models/job_freelance.dart';
+import 'package:offertelavoroflutter_app/models/sorts.dart';
+import 'package:offertelavoroflutter_app/repositories/mapper/filters_mapper.dart';
 import 'package:offertelavoroflutter_app/repositories/mapper/freelance_mapper.dart';
 import 'package:offertelavoroflutter_app/repositories/mapper/job_mapper.dart';
+import 'package:offertelavoroflutter_app/repositories/mapper/sorts_mapper.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/query_notion_request.dart';
 import 'package:offertelavoroflutter_app/services/network/job_service.dart';
 
 class JobRepository {
   final JobService jobService;
   final JobMapper jobMapper;
+  final FiltersMapper filtersMapper;
+  final SortsMapper sortsMapper;
   final FreelanceMapper freelanceMapper;
   final Logger logger;
   bool _hasMoreJob = false;
@@ -17,21 +24,47 @@ class JobRepository {
   List<JobFreelance> _freelanceList = [];
   String? _cursorJob;
   String? _cursorFreelance;
+  Filters _filtersJob = const Filters();
+  Sorts _sortsJob = const Sorts(
+    team: SortType.descending,
+  );
+  Filters _filtersFreelance = const Filters();
+  Sorts _sortsFreelance = const Sorts();
 
   JobRepository({
     required this.jobService,
     required this.jobMapper,
     required this.freelanceMapper,
     required this.logger,
+    required this.filtersMapper,
+    required this.sortsMapper,
   });
 
   bool get hasMoreJob => _hasMoreJob;
   bool get hasMoreFreelance => _hasMoreFreelance;
+  Filters get filterJob => _filtersJob;
+  Sorts get sortsJob => _sortsJob;
+  Filters get filterFreelance => _filtersFreelance;
+  Sorts get sortsFreelance => _sortsFreelance;
 
-  Future<List<Job>> get firstListJobs async {
+  Future<List<Job>> firstListJobs({
+    Filters? filters,
+    Sorts? sorts,
+  }) async {
+    if (filters != null) {
+      _filtersJob = filters;
+    }
+
+    if (sorts != null) {
+      _sortsJob = sorts;
+    }
+
     try {
       final response = await jobService.fetchJobList(
-        QueryNotionRequest(),
+        QueryNotionRequest(
+          filters: filtersMapper.toDTO(_filtersJob),
+          sorts: sortsMapper.toDTO(_sortsJob),
+        ),
       );
 
       _jobList =
@@ -51,7 +84,11 @@ class JobRepository {
   Future<List<Job>> get fetchAnotherJobs async {
     try {
       final response = await jobService.fetchJobList(
-        QueryNotionRequest(startCursor: _cursorJob),
+        QueryNotionRequest(
+          startCursor: _cursorJob,
+          filters: filtersMapper.toDTO(_filtersJob),
+          sorts: sortsMapper.toDTO(_sortsJob),
+        ),
       );
 
       final newList =
@@ -71,10 +108,23 @@ class JobRepository {
     }
   }
 
-  Future<List<JobFreelance>> get firstListFreelance async {
+  Future<List<JobFreelance>> firstListFreelance({
+    Filters? filters,
+    Sorts? sorts,
+  }) async {
+    if (filters != null) {
+      _filtersFreelance = filters;
+    }
+
+    if (sorts != null) {
+      _sortsFreelance = sorts;
+    }
     try {
       final response = await jobService.fetchFreelanceList(
-        QueryNotionRequest(),
+        QueryNotionRequest(
+          filters: filtersMapper.toDTO(_filtersFreelance),
+          sorts: sortsMapper.toDTO(_sortsFreelance),
+        ),
       );
 
       _hasMoreFreelance = response.hasMore ?? false;
@@ -95,7 +145,11 @@ class JobRepository {
   Future<List<JobFreelance>> get fetchAnotherFreelance async {
     try {
       final response = await jobService.fetchFreelanceList(
-        QueryNotionRequest(startCursor: _cursorFreelance),
+        QueryNotionRequest(
+          startCursor: _cursorFreelance,
+          filters: filtersMapper.toDTO(_filtersFreelance),
+          sorts: sortsMapper.toDTO(_sortsFreelance),
+        ),
       );
 
       final newList =

@@ -6,6 +6,8 @@ List<RepositoryProvider> _repositories = [
       jobService: context.read<JobService>(),
       jobMapper: context.read<JobMapper>(),
       freelanceMapper: context.read<FreelanceMapper>(),
+      filtersMapper: context.read<FiltersMapper>(),
+      sortsMapper: context.read<SortsMapper>(),
       logger: context.read<Logger>(),
     ),
   ),

@@ -8,5 +8,15 @@ abstract class FreelanceListEvent extends Equatable {
 }
 
 class FetchFreelanceListEvent extends FreelanceListEvent {
-  const FetchFreelanceListEvent();
+  final Filters? filters;
+  final Sorts? sorts;
+
+  const FetchFreelanceListEvent({
+    this.filters,
+    this.sorts,
+  });
+}
+
+class FetchMoreFreelanceListEvent extends FreelanceListEvent {
+  const FetchMoreFreelanceListEvent();
 }

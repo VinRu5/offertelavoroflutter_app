@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/misc/constants.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/property_dto.dart';
 
 class CreatedTimeDTO extends PropertyDTO with EquatableMixin {
-  static const _createdTimeKey = "created_time";
-
   final String createdTime;
 
   CreatedTimeDTO({
@@ -13,9 +12,9 @@ class CreatedTimeDTO extends PropertyDTO with EquatableMixin {
   });
 
   factory CreatedTimeDTO.fromJson(Map<String, dynamic> json) => CreatedTimeDTO(
-        id: json[PropertyDTO.idKey],
-        type: json[PropertyDTO.typeKey],
-        createdTime: json[_createdTimeKey],
+        id: json[K.idKey],
+        type: json[K.typeKey],
+        createdTime: json[K.createdTimeKey],
       );
 
   @override

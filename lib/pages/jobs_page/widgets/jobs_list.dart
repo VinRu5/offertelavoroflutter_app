@@ -34,18 +34,32 @@ class JobsList extends StatelessWidget {
           }
 
           if (state is NoJobListState) {
-            return const CardNotification(
-              title: "Ci dispiace!",
-              message:
-                  "Non sono presenti annunci al momento. Riprova più tardi.",
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: const [
+                  CardNotification(
+                    title: "Ci dispiace!",
+                    message:
+                        "Non sono presenti annunci al momento. Riprova più tardi.",
+                  ),
+                ],
+              ),
             );
           }
 
           if (state is ErrorJobListState) {
-            return const CardNotification(
-              title: "Si è verificato un errore",
-              message: "Non è possibile caricare o trovare gli annunci.",
-              error: true,
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: const [
+                  CardNotification(
+                    title: "Si è verificato un errore",
+                    message: "Non è possibile caricare o trovare gli annunci.",
+                    error: true,
+                  ),
+                ],
+              ),
             );
           }
 

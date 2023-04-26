@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/misc/constants.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/generic_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/icon_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/parent_dto.dart';
@@ -6,19 +7,6 @@ import 'package:offertelavoroflutter_app/services/network/dto/properties_dto.dar
 import 'package:pine/dto/dto.dart';
 
 class JobDTO extends DTO with EquatableMixin {
-  static const _objectKey = "object";
-  static const _idKey = "id";
-  static const _createdTimeKey = "created_time";
-  static const _lastEditedTimeKey = "last_edited_time";
-  static const _createdByKey = "created_by";
-  static const _lastEditedByKey = "last_edited_by";
-  static const _coverKey = "cover";
-  static const _iconKey = "icon";
-  static const _parentKey = "parent";
-  static const _archivedKey = "archived";
-  static const _propertiesKey = "properties";
-  static const _urlKey = "url";
-
   final String? object;
   final String? id;
   final String? createdTime;
@@ -48,28 +36,29 @@ class JobDTO extends DTO with EquatableMixin {
   });
 
   factory JobDTO.fromJson(Map<String, dynamic> json) => JobDTO(
-        object: json[_objectKey],
-        id: json[_idKey],
-        createdTime: json[_createdTimeKey],
-        lastEditedTime: json[_lastEditedTimeKey],
-        createdBy: json[_createdByKey] == null
+        object: json[K.objectKey],
+        id: json[K.idKey],
+        createdTime: json[K.createdTimeKey],
+        lastEditedTime: json[K.lastEditedTimeKey],
+        createdBy: json[K.createdByKey] == null
             ? null
-            : GenericDTO.fromJson(json[_createdByKey]),
-        lastEditedBy: json[_lastEditedByKey] == null
+            : GenericDTO.fromJson(json[K.createdByKey]),
+        lastEditedBy: json[K.lastEditedByKey] == null
             ? null
-            : GenericDTO.fromJson(json[_lastEditedByKey]),
-        cover: json[_coverKey] == null
+            : GenericDTO.fromJson(json[K.lastEditedByKey]),
+        cover: json[K.coverKey] == null
             ? null
-            : GenericDTO.fromJson(json[_coverKey]),
-        icon: json[_iconKey] == null ? null : IconDTO.fromJson(json[_iconKey]),
-        parent: json[_parentKey] == null
+            : GenericDTO.fromJson(json[K.coverKey]),
+        icon:
+            json[K.iconKey] == null ? null : IconDTO.fromJson(json[K.iconKey]),
+        parent: json[K.parentKey] == null
             ? null
-            : ParentDTO.fromJson(json[_parentKey]),
-        properties: json[_propertiesKey] == null
+            : ParentDTO.fromJson(json[K.parentKey]),
+        properties: json[K.propertiesKey] == null
             ? null
-            : PropertiesDTO.fromJson(json[_propertiesKey]),
-        archived: json[_archivedKey],
-        url: json[_urlKey],
+            : PropertiesDTO.fromJson(json[K.propertiesKey]),
+        archived: json[K.archivedKey],
+        url: json[K.urlKey],
       );
 
   @override

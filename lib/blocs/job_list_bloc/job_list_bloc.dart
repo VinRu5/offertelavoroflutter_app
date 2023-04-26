@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/models/filters.dart';
 import 'package:offertelavoroflutter_app/models/job.dart';
+import 'package:offertelavoroflutter_app/models/sorts.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 
 part 'job_list_event.dart';
@@ -17,21 +19,35 @@ class JobListBloc extends Bloc<JobListEvent, JobListState> {
     on<FetchMoreJobListEvent>(_onFetchMoreJobListEvent);
   }
 
-  fetchFirstPageJobs() => add(const FetchJobListEvent());
+  fetchFirstPageJobs({
+    Filters? filters,
+    Sorts? sorts,
+  }) =>
+      add(
+        FetchJobListEvent(
+          filters: filters,
+          sorts: sorts,
+        ),
+      );
   fetchMoreJobs() => add(const FetchMoreJobListEvent());
 
   FutureOr<void> _onFetchJobListEvent(
-      JobListEvent event, Emitter<JobListState> emit) async {
+      FetchJobListEvent event, Emitter<JobListState> emit) async {
     emit(const FetchingJobListState());
 
     try {
-      final List<Job> jobs = await jobRepository.firstListJobs;
+      final List<Job> jobs = await jobRepository.firstListJobs(
+        filters: event.filters,
+        sorts: event.sorts,
+      );
 
       emit(
         jobs.isNotEmpty
             ? FetchedJobListState(
                 jobs: jobs,
                 hasMore: jobRepository.hasMoreJob,
+                filters: jobRepository.filterJob,
+                sorts: jobRepository.sortsJob,
               )
             : const NoJobListState(),
       );
@@ -50,6 +66,8 @@ class JobListBloc extends Bloc<JobListEvent, JobListState> {
             ? FetchedJobListState(
                 jobs: jobs,
                 hasMore: jobRepository.hasMoreJob,
+                filters: jobRepository.filterJob,
+                sorts: jobRepository.sortsJob,
               )
             : const NoJobListState(),
       );

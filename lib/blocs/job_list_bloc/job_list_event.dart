@@ -8,7 +8,13 @@ abstract class JobListEvent extends Equatable {
 }
 
 class FetchJobListEvent extends JobListEvent {
-  const FetchJobListEvent();
+  final Filters? filters;
+  final Sorts? sorts;
+
+  const FetchJobListEvent({
+    this.filters,
+    this.sorts,
+  });
 }
 
 class FetchMoreJobListEvent extends JobListEvent {

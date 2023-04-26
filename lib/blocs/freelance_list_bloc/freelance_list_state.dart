@@ -14,10 +14,14 @@ class FetchingFreelanceListState extends FreelanceListState {
 class FetchedFreelanceListState extends FreelanceListState {
   final List<JobFreelance> freelanceJobs;
   final bool hasMore;
+  final Filters filters;
+  final Sorts sorts;
 
   const FetchedFreelanceListState({
     required this.freelanceJobs,
     required this.hasMore,
+    required this.filters,
+    required this.sorts,
   });
 }
 

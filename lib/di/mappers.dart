@@ -6,5 +6,11 @@ List<SingleChildWidget> _mappers = [
   ),
   Provider<FreelanceMapper>(
     create: (_) => FreelanceMapper(),
+  ),
+  Provider<FiltersMapper>(
+    create: (_) => FiltersMapper(),
+  ),
+  Provider<SortsMapper>(
+    create: (_) => SortsMapper(),
   )
 ];

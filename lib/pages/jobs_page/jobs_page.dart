@@ -6,11 +6,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter_app/blocs/freelance_list_bloc/freelance_list_bloc.dart';
 import 'package:offertelavoroflutter_app/blocs/job_list_bloc/job_list_bloc.dart';
 import 'package:offertelavoroflutter_app/misc/bubble_indicator_painter.dart';
+import 'package:offertelavoroflutter_app/models/filters.dart';
+import 'package:offertelavoroflutter_app/models/sorts.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/drawer_content.dart';
+import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/filter_and_sort.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/freelance_list.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/jobs_list.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
+import 'package:offertelavoroflutter_app/widgets/job_flutter_button.dart';
 
 typedef PageChanged = Function(int index);
 
@@ -49,6 +53,11 @@ class _JobsPageState extends State<JobsPage> {
   bool isFreelance = false;
   bool hasMoreJobs = false;
   bool hasMoreFreelance = false;
+  Filters filtersJob = Filters();
+  Sorts sortsJob = Sorts();
+  Filters filtersFreelance = Filters();
+  Sorts sortsFreelance = Sorts();
+
   final List<Widget> _pages = const [
     JobsList(),
     FreelanceList(),
@@ -78,14 +87,22 @@ class _JobsPageState extends State<JobsPage> {
           BlocListener<JobListBloc, JobListState>(
             listener: (context, state) {
               if (state is FetchedJobListState) {
-                hasMoreJobs = state.hasMore;
+                setState(() {
+                  hasMoreJobs = state.hasMore;
+                  sortsJob = state.sorts;
+                  filtersJob = state.filters;
+                });
               }
             },
           ),
           BlocListener<FreelanceListBloc, FreelanceListState>(
             listener: (context, state) {
               if (state is FetchedFreelanceListState) {
-                hasMoreFreelance = state.hasMore;
+                setState(() {
+                  hasMoreFreelance = state.hasMore;
+                  filtersFreelance = state.filters;
+                  sortsFreelance = state.sorts;
+                });
               }
             },
           ),
@@ -126,6 +143,27 @@ class _JobsPageState extends State<JobsPage> {
                   child: _SwitchButton(
                     controller: _pageController,
                     isFreelance: isFreelance,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: FilterAndSort(
+                    isFreelance: isFreelance,
+                    initialFilters: isFreelance ? filtersFreelance : filtersJob,
+                    initialSorts: isFreelance ? sortsFreelance : sortsJob,
+                    onSubmitFilter: (filters) => isFreelance
+                        ? context
+                            .read<FreelanceListBloc>()
+                            .fetchFreelance(filters: filters)
+                        : context
+                            .read<JobListBloc>()
+                            .fetchFirstPageJobs(filters: filters),
+                    onSubmitSort: (sorts) => isFreelance
+                        ? context
+                            .read<FreelanceListBloc>()
+                            .fetchFreelance(sorts: sorts)
+                        : context
+                            .read<JobListBloc>()
+                            .fetchFirstPageJobs(sorts: sorts),
                   ),
                 ),
               ],

@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/misc/constants.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/property_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/text_dto.dart';
 
 class RichTextDTO extends PropertyDTO with EquatableMixin {
-  static const _richTextKey = "rich_text";
-
   final List<TextDTO> richText;
 
   RichTextDTO({
@@ -14,9 +13,9 @@ class RichTextDTO extends PropertyDTO with EquatableMixin {
   });
 
   factory RichTextDTO.fromJson(Map<String, dynamic> json) => RichTextDTO(
-        id: json[PropertyDTO.idKey],
-        type: json[PropertyDTO.typeKey],
-        richText: json[_richTextKey]
+        id: json[K.idKey],
+        type: json[K.typeKey],
+        richText: json[K.richTextKey]
             .map<TextDTO>((item) => TextDTO.fromJson(item))
             .toList(growable: false),
       );

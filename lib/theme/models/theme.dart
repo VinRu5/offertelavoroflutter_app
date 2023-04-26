@@ -137,6 +137,18 @@ class DarkTheme {
             ),
           ),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 0.0,
+            horizontal: 24.0,
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: AppColors.primaryLight,
+            ),
+            borderRadius: BorderRadius.circular(42.0),
+          ),
+        ),
       );
 }
 

@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/misc/constants.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/property_dto.dart';
 import 'package:pine/dto/dto.dart';
 
 class SelectDTO extends PropertyDTO with EquatableMixin {
-  static const _selectKey = "select";
-
   final SelectContentDTO? select;
 
   SelectDTO({
@@ -14,11 +13,11 @@ class SelectDTO extends PropertyDTO with EquatableMixin {
   });
 
   factory SelectDTO.fromJson(Map<String, dynamic> json) => SelectDTO(
-        id: json[PropertyDTO.idKey],
-        type: json[PropertyDTO.typeKey],
-        select: json[_selectKey] == null
+        id: json[K.idKey],
+        type: json[K.typeKey],
+        select: json[K.selectKey] == null
             ? null
-            : SelectContentDTO.fromJson(json[_selectKey]),
+            : SelectContentDTO.fromJson(json[K.selectKey]),
       );
 
   @override
@@ -30,10 +29,6 @@ class SelectDTO extends PropertyDTO with EquatableMixin {
 }
 
 class SelectContentDTO extends DTO with EquatableMixin {
-  static const _idKey = "id";
-  static const _nameKey = "name";
-  static const _colorKey = "color";
-
   final String? id;
   final String? name;
   final String? color;
@@ -46,9 +41,9 @@ class SelectContentDTO extends DTO with EquatableMixin {
 
   factory SelectContentDTO.fromJson(Map<String, dynamic> json) =>
       SelectContentDTO(
-        id: json[_idKey],
-        name: json[_nameKey],
-        color: json[_colorKey],
+        id: json[K.idKey],
+        name: json[K.nameKey],
+        color: json[K.colorKey],
       );
 
   @override
