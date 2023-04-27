@@ -68,6 +68,24 @@ class LightTheme {
             ),
           ),
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 0.0,
+            horizontal: 24.0,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColors.primaryLight.withAlpha(150),
+            ),
+            borderRadius: BorderRadius.circular(42.0),
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: AppColors.primaryLight,
+            ),
+            borderRadius: BorderRadius.circular(42.0),
+          ),
+        ),
       );
 }
 
@@ -141,6 +159,12 @@ class DarkTheme {
           contentPadding: const EdgeInsets.symmetric(
             vertical: 0.0,
             horizontal: 24.0,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColors.primaryLight.withAlpha(150),
+            ),
+            borderRadius: BorderRadius.circular(42.0),
           ),
           border: OutlineInputBorder(
             borderSide: const BorderSide(

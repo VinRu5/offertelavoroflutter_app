@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter_app/models/enum/relationship.dart';
 import 'package:offertelavoroflutter_app/models/filters.dart';
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/filter_and_sort_button.dart';
@@ -60,6 +61,18 @@ class _FilterPageFreelanceState extends State<FilterPageFreelance> {
           children: [
             TextFormField(
               controller: searchController,
+              decoration: InputDecoration(
+                hintText: "Digita per cercare",
+                prefixIcon: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    FaIcon(
+                      FontAwesomeIcons.magnifyingGlass,
+                      size: 14.0,
+                    ),
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 16.0),
             Text(

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:offertelavoroflutter_app/models/enum/contract_type.dart';
 import 'package:offertelavoroflutter_app/models/enum/seniority.dart';
 import 'package:offertelavoroflutter_app/models/enum/team_location.dart';
@@ -73,6 +74,18 @@ class _FilterPageJobState extends State<FilterPageJob> {
           children: [
             TextFormField(
               controller: searchController,
+              decoration: InputDecoration(
+                hintText: "Digita per cercare",
+                prefixIcon: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    FaIcon(
+                      FontAwesomeIcons.magnifyingGlass,
+                      size: 14.0,
+                    ),
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 16.0),
             Text(
