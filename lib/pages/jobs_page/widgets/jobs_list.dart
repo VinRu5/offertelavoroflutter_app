@@ -83,7 +83,6 @@ class _JobsListContent extends StatelessWidget {
             onRefresh: () async =>
                 context.read<JobListBloc>().fetchFirstPageJobs(),
             color: AppColors.primaryLight,
-            displacement: 0.0,
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(
