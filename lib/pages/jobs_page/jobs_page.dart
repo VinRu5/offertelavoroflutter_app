@@ -197,6 +197,10 @@ class _JobsPageState extends State<JobsPage> {
 
     return true;
   }
+
+  Future<void> _refresh() async {
+    print("ciao");
+  }
 }
 
 class _SwitchButton extends StatelessWidget {

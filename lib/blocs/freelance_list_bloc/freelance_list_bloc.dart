@@ -19,7 +19,7 @@ class FreelanceListBloc extends Bloc<FreelanceListEvent, FreelanceListState> {
     on<FetchMoreFreelanceListEvent>(_onFetchMoreFreelanceListEvent);
   }
 
-  fetchFreelance({
+  void fetchFreelance({
     Filters? filters,
     Sorts? sorts,
   }) =>
@@ -30,7 +30,7 @@ class FreelanceListBloc extends Bloc<FreelanceListEvent, FreelanceListState> {
         ),
       );
 
-  fetchMoreFreelance() => add(const FetchMoreFreelanceListEvent());
+  void fetchMoreFreelance() => add(const FetchMoreFreelanceListEvent());
 
   FutureOr<void> _onFetchFreelanceListEvent(
       FetchFreelanceListEvent event, Emitter<FreelanceListState> emit) async {

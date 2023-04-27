@@ -78,176 +78,181 @@ class _JobDetailsContent extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            automaticallyImplyLeading: false,
-            leading: IconButton(
-              onPressed: () => context.router.pop(),
-              icon: const FaIcon(
-                FontAwesomeIcons.chevronLeft,
-                size: 24.0,
+  Widget build(BuildContext context) => RefreshIndicator(
+        onRefresh: () async => context.read<JobDetailsBloc>().fetchJob(job.id),
+        color: AppColors.primaryLight,
+        edgeOffset: 200.0,
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                onPressed: () => context.router.pop(),
+                icon: const FaIcon(
+                  FontAwesomeIcons.chevronLeft,
+                  size: 24.0,
+                ),
               ),
-            ),
-            expandedHeight: 120,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              centerTitle: true,
-              title: Text(
-                "${job.emoji} ${job.qualification}",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.primaryLight,
-                      fontWeight: FontWeight.w600,
-                    ),
-                textAlign: TextAlign.center,
+              expandedHeight: 120,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Text(
+                  "${job.emoji} ${job.qualification}",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.primaryLight,
+                        fontWeight: FontWeight.w600,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            actions: [
-              BlocBuilder<FavouriteJobBloc, FavouriteJobState>(
-                builder: (context, stateFavourite) {
-                  if (stateFavourite is LoadedFavouriteJobState) {
-                    final isFavourite = stateFavourite.favouriteJob.any(
-                      (favorite) => favorite.id == job.id,
-                    );
+              actions: [
+                BlocBuilder<FavouriteJobBloc, FavouriteJobState>(
+                  builder: (context, stateFavourite) {
+                    if (stateFavourite is LoadedFavouriteJobState) {
+                      final isFavourite = stateFavourite.favouriteJob.any(
+                        (favorite) => favorite.id == job.id,
+                      );
+
+                      return IconButton(
+                        onPressed: () => isFavourite
+                            ? context.read<FavouriteJobBloc>().removeFavourite(
+                                  FavouriteJob.fromJob(job),
+                                )
+                            : context.read<FavouriteJobBloc>().addFavourite(
+                                  FavouriteJob.fromJob(job),
+                                ),
+                        icon: FaIcon(
+                          isFavourite
+                              ? FontAwesomeIcons.solidBookmark
+                              : FontAwesomeIcons.bookmark,
+                          size: 24.0,
+                        ),
+                      );
+                    }
 
                     return IconButton(
-                      onPressed: () => isFavourite
-                          ? context.read<FavouriteJobBloc>().removeFavourite(
+                      onPressed: () => stateFavourite is NoFavouriteJobState
+                          ? context.read<FavouriteJobBloc>().addFavourite(
                                 FavouriteJob.fromJob(job),
                               )
-                          : context.read<FavouriteJobBloc>().addFavourite(
-                                FavouriteJob.fromJob(job),
-                              ),
-                      icon: FaIcon(
-                        isFavourite
-                            ? FontAwesomeIcons.solidBookmark
-                            : FontAwesomeIcons.bookmark,
+                          : null,
+                      icon: const FaIcon(
+                        FontAwesomeIcons.bookmark,
                         size: 24.0,
                       ),
                     );
-                  }
-
-                  return IconButton(
-                    onPressed: () => stateFavourite is NoFavouriteJobState
-                        ? context.read<FavouriteJobBloc>().addFavourite(
-                              FavouriteJob.fromJob(job),
-                            )
-                        : null,
-                    icon: const FaIcon(
-                      FontAwesomeIcons.bookmark,
-                      size: 24.0,
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: job.archived
-                  ? CardNotification(
-                      title: "Ci dispiace!",
-                      message:
-                          "Questo annuncio non è più disponibile se vuoi puoi eliminarlo dai preferiti",
-                      child: JobFlutterButton(
-                        child: Text(
-                          "Elimina",
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: AppColors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                        ),
-                        onPressed: () {
-                          context.read<FavouriteJobBloc>().removeFavourite(
-                                FavouriteJob.fromJob(job),
-                              );
-                          context.router.pop();
-                        },
-                      ),
-                    )
-                  : Column(
-                      children: [
-                        TextRow(
-                          label: "Nome azienda",
-                          text: job.company,
-                        ),
-                        TextRow(
-                          label: "URL sito web",
-                          text: job.website,
-                        ),
-                        TextRow(
-                          label: "Qualifica",
-                          text: job.qualification.isNotEmpty
-                              ? job.qualification
-                              : job.title,
-                        ),
-                        SelectRow(
-                          label: "Seniority",
-                          selectLabel: job.seniority.getString,
-                          backgroundColor: job.seniority.color,
-                          color: job.seniority.colorText,
-                        ),
-                        SelectRow(
-                          label: "Team",
-                          selectLabel: job.team.getString,
-                          backgroundColor: job.team.color,
-                          color: job.team.colorText,
-                        ),
-                        SelectRow(
-                          label: "Contratto",
-                          selectLabel: job.contract.getString,
-                          backgroundColor: job.contract.color,
-                          color: job.contract.colorText,
-                        ),
-                        TextRow(
-                          label: "RAL",
-                          text: job.ral,
-                        ),
-                        RichTextRow(
-                          label: "Descrizione offerta",
-                          texts: job.description,
-                        ),
-                        TextRow(
-                          label: "Come candidarsi",
-                          text: job.toApply,
-                          underline: true,
-                          onPressed: () async {
-                            try {
-                              await context
-                                  .read<UrlLauncherRepository>()
-                                  .launchMyUrl(job.toApply);
-                            } catch (e) {
-                              _showErrorModal(
-                                context,
-                                e is ErrorLauncher
-                                    ? e.text ?? ''
-                                    : 'C\'è stato un errore',
-                              );
-                            }
+                  },
+                ),
+              ],
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: job.archived
+                    ? CardNotification(
+                        title: "Ci dispiace!",
+                        message:
+                            "Questo annuncio non è più disponibile se vuoi puoi eliminarlo dai preferiti",
+                        child: JobFlutterButton(
+                          child: Text(
+                            "Elimina",
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      color: AppColors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                          ),
+                          onPressed: () {
+                            context.read<FavouriteJobBloc>().removeFavourite(
+                                  FavouriteJob.fromJob(job),
+                                );
+                            context.router.pop();
                           },
                         ),
-                        TextRow(
-                          label: "Job Posted",
-                          text:
-                              DateFormat("dd/MM/y  H:m").format(job.jobPosted),
-                        ),
-                        TextRow(
-                          label: "Località",
-                          text: job.location,
-                        ),
-                        TextRow(
-                          label: "Stato di pubblicazione",
-                          text: job.publicationStatus,
-                        ),
-                        const SizedBox(height: 40.0),
-                      ],
-                    ),
+                      )
+                    : Column(
+                        children: [
+                          TextRow(
+                            label: "Nome azienda",
+                            text: job.company,
+                          ),
+                          TextRow(
+                            label: "URL sito web",
+                            text: job.website,
+                          ),
+                          TextRow(
+                            label: "Qualifica",
+                            text: job.qualification.isNotEmpty
+                                ? job.qualification
+                                : job.title,
+                          ),
+                          SelectRow(
+                            label: "Seniority",
+                            selectLabel: job.seniority.getString,
+                            backgroundColor: job.seniority.color,
+                            color: job.seniority.colorText,
+                          ),
+                          SelectRow(
+                            label: "Team",
+                            selectLabel: job.team.getString,
+                            backgroundColor: job.team.color,
+                            color: job.team.colorText,
+                          ),
+                          SelectRow(
+                            label: "Contratto",
+                            selectLabel: job.contract.getString,
+                            backgroundColor: job.contract.color,
+                            color: job.contract.colorText,
+                          ),
+                          TextRow(
+                            label: "RAL",
+                            text: job.ral,
+                          ),
+                          RichTextRow(
+                            label: "Descrizione offerta",
+                            texts: job.description,
+                          ),
+                          TextRow(
+                            label: "Come candidarsi",
+                            text: job.toApply,
+                            underline: true,
+                            onPressed: () async {
+                              try {
+                                await context
+                                    .read<UrlLauncherRepository>()
+                                    .launchMyUrl(job.toApply);
+                              } catch (e) {
+                                _showErrorModal(
+                                  context,
+                                  e is ErrorLauncher
+                                      ? e.text ?? ''
+                                      : 'C\'è stato un errore',
+                                );
+                              }
+                            },
+                          ),
+                          TextRow(
+                            label: "Job Posted",
+                            text: DateFormat("dd/MM/y  H:m")
+                                .format(job.jobPosted),
+                          ),
+                          TextRow(
+                            label: "Località",
+                            text: job.location,
+                          ),
+                          TextRow(
+                            label: "Stato di pubblicazione",
+                            text: job.publicationStatus,
+                          ),
+                          const SizedBox(height: 40.0),
+                        ],
+                      ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
 
   void _showErrorModal(

@@ -79,57 +79,63 @@ class _JobsListContent extends StatelessWidget {
   Widget build(BuildContext context) =>
       BlocBuilder<FavouriteJobBloc, FavouriteJobState>(
         builder: (context, stateFavourite) {
-          return ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 32.0,
-            ),
-            itemCount: jobs.length,
-            separatorBuilder: (_, index) => const Divider(),
-            itemBuilder: (_, index) => Column(
-              children: [
-                _JobTile(
-                  job: jobs[index],
-                  onPressed: () {
-                    context.router.push(
-                      JobDetailsRoute(jobID: jobs[index].id),
-                    );
-                  },
-                ),
-                Visibility(
-                  visible: _isFavourite(
-                    (stateFavourite is LoadedFavouriteJobState
-                        ? stateFavourite.favouriteJob
-                        : []),
-                    jobs[index].id,
+          return RefreshIndicator(
+            onRefresh: () async =>
+                context.read<JobListBloc>().fetchFirstPageJobs(),
+            color: AppColors.primaryLight,
+            displacement: 0.0,
+            child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 32.0,
+              ),
+              itemCount: jobs.length,
+              separatorBuilder: (_, index) => const Divider(),
+              itemBuilder: (_, index) => Column(
+                children: [
+                  _JobTile(
+                    job: jobs[index],
+                    onPressed: () {
+                      context.router.push(
+                        JobDetailsRoute(jobID: jobs[index].id),
+                      );
+                    },
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8.0,
-                      right: 8.0,
-                      top: 4.0,
-                      bottom: 0.0,
+                  Visibility(
+                    visible: _isFavourite(
+                      (stateFavourite is LoadedFavouriteJobState
+                          ? stateFavourite.favouriteJob
+                          : []),
+                      jobs[index].id,
                     ),
-                    child: Row(
-                      children: [
-                        const FaIcon(
-                          FontAwesomeIcons.solidBookmark,
-                          size: 8.0,
-                          color: AppColors.primaryLight,
-                        ),
-                        const SizedBox(width: 4.0),
-                        Expanded(
-                          child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8.0,
+                        right: 8.0,
+                        top: 4.0,
+                        bottom: 0.0,
+                      ),
+                      child: Row(
+                        children: [
+                          const FaIcon(
+                            FontAwesomeIcons.solidBookmark,
+                            size: 8.0,
                             color: AppColors.primaryLight,
-                            height: 1.5,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 4.0),
+                          Expanded(
+                            child: Container(
+                              color: AppColors.primaryLight,
+                              height: 1.5,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

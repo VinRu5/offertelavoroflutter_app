@@ -19,7 +19,7 @@ class JobListBloc extends Bloc<JobListEvent, JobListState> {
     on<FetchMoreJobListEvent>(_onFetchMoreJobListEvent);
   }
 
-  fetchFirstPageJobs({
+  void fetchFirstPageJobs({
     Filters? filters,
     Sorts? sorts,
   }) =>
@@ -29,7 +29,7 @@ class JobListBloc extends Bloc<JobListEvent, JobListState> {
           sorts: sorts,
         ),
       );
-  fetchMoreJobs() => add(const FetchMoreJobListEvent());
+  void fetchMoreJobs() => add(const FetchMoreJobListEvent());
 
   FutureOr<void> _onFetchJobListEvent(
       FetchJobListEvent event, Emitter<JobListState> emit) async {
