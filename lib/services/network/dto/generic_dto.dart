@@ -16,6 +16,11 @@ class GenericDTO extends DTO with EquatableMixin {
         id: json[K.idKey],
       );
 
+  Map<String, dynamic> toJson() => {
+        K.objectKey: object,
+        K.idKey: id,
+      };
+
   @override
   List<Object?> get props => [
         object,

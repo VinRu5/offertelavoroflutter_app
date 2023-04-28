@@ -16,6 +16,11 @@ class ParentDTO extends DTO with EquatableMixin {
         databaseId: json[K.databaseIdKey],
       );
 
+  Map<String, dynamic> toJson() => {
+        K.typeKey: type,
+        K.databaseIdKey: databaseId,
+      };
+
   @override
   List<Object?> get props => [
         type,

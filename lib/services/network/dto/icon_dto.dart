@@ -16,6 +16,11 @@ class IconDTO extends DTO with EquatableMixin {
         emoji: json[K.emojiKey],
       );
 
+  Map<String, dynamic> toJson() => {
+        K.typeKey: type,
+        K.emojiKey: emoji,
+      };
+
   @override
   List<Object?> get props => [
         type,

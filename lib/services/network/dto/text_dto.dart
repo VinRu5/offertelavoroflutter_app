@@ -53,6 +53,13 @@ class TextContentDTO extends DTO with EquatableMixin {
         link: json[K.linkKey] == null ? null : json[K.linkKey][K.urlKey],
       );
 
+  Map<String, dynamic> toJson() => {
+        K.contentKey: content,
+        K.linkKey: {
+          K.urlKey: link,
+        }
+      };
+
   @override
   List<Object?> get props => [
         content,
@@ -85,6 +92,15 @@ class AnnotationsDTO extends DTO with EquatableMixin {
         code: json[K.codeKey],
         color: json[K.colorKey],
       );
+
+  Map<String, dynamic> toJson() => {
+        K.boldKey: bold,
+        K.italicKey: italic,
+        K.strikethroughKey: strikethrough,
+        K.undelineKey: underline,
+        K.codeKey: code,
+        K.colorKey: color,
+      };
 
   @override
   List<Object?> get props => [
