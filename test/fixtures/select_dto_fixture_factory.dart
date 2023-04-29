@@ -3,10 +3,15 @@ import 'package:offertelavoroflutter_app/misc/constants.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/select_dto.dart';
 
 extension SelectDTOFixture on SelectDTO {
-  static SelectDTOFixtureFactory factory() => SelectDTOFixtureFactory();
+  static SelectDTOFixtureFactory factory(List<String> list) =>
+      SelectDTOFixtureFactory(list);
 }
 
 class SelectDTOFixtureFactory extends JsonFixtureFactory<SelectDTO> {
+  final List<String> list;
+
+  SelectDTOFixtureFactory(this.list);
+
   @override
   FixtureDefinition<SelectDTO> definition() => define(
         (faker) => SelectDTO(
@@ -15,7 +20,7 @@ class SelectDTOFixtureFactory extends JsonFixtureFactory<SelectDTO> {
             "*.%3D%26".length,
           ),
           type: "select",
-          select: SelectContentDTOFixture.factory().makeSingle(),
+          select: SelectContentDTOFixture.factory(list).makeSingle(),
         ),
       );
 
@@ -26,19 +31,22 @@ class SelectDTOFixtureFactory extends JsonFixtureFactory<SelectDTO> {
           K.typeKey: object.type,
           K.selectKey: object.select == null
               ? null
-              : SelectContentDTOFixture.factory()
+              : SelectContentDTOFixture.factory(list)
                   .makeJsonObjectFromSingle(object.select!),
         },
       );
 }
 
 extension SelectContentDTOFixture on SelectContentDTO {
-  static SelectContentDTOFixtureFactory factory() =>
-      SelectContentDTOFixtureFactory();
+  static SelectContentDTOFixtureFactory factory(List<String> list) =>
+      SelectContentDTOFixtureFactory(list);
 }
 
 class SelectContentDTOFixtureFactory
     extends JsonFixtureFactory<SelectContentDTO> {
+  final List<String> list;
+  SelectContentDTOFixtureFactory(this.list);
+
   @override
   FixtureDefinition<SelectContentDTO> definition() => define(
         (faker) => SelectContentDTO(
@@ -46,7 +54,7 @@ class SelectContentDTOFixtureFactory
             "8f86bbad-f831-4471-b258-093179a4b57c",
             "8f86bbad-f831-4471-b258-093179a4b57c".length,
           ),
-          name: faker.randomGenerator.string(10),
+          name: faker.randomGenerator.element<String>(list),
           color: faker.color.color(),
         ),
       );

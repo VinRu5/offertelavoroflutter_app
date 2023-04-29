@@ -17,10 +17,14 @@ class PropertiesDTOFixtureFactory extends JsonFixtureFactory<PropertiesDTO> {
   FixtureDefinition<PropertiesDTO> definition() => define(
         (faker) => PropertiesDTO(
           jobPosted: CreatedTimeDTOFixture.factory().makeSingle(),
-          team: SelectDTOFixture.factory().makeSingle(),
-          contratto: SelectDTOFixture.factory().makeSingle(),
-          seniority: SelectDTOFixture.factory().makeSingle(),
-          ral: SelectDTOFixture.factory().makeSingle(),
+          team: SelectDTOFixture.factory(["Full Remote", "Ibrido", "In sede"])
+              .makeSingle(),
+          contratto:
+              SelectDTOFixture.factory(["Part time", "Full time"]).makeSingle(),
+          seniority: SelectDTOFixture.factory(["Junior", "Mid", "Senior"])
+              .makeSingle(),
+          ral:
+              SelectDTOFixture.factory(["50k annui", "60k annui"]).makeSingle(),
           name: TitleDTOFixture.factory().makeSingle(),
           qualifica: RichTextDTOFixture.factory().makeSingle(),
           retribuzione: RichTextDTOFixture.factory().makeSingle(),
@@ -37,11 +41,14 @@ class PropertiesDTOFixtureFactory extends JsonFixtureFactory<PropertiesDTO> {
           tempistiche: RichTextDTOFixture.factory().makeSingle(),
           richiestaDiLavoro: RichTextDTOFixture.factory().makeSingle(),
           budget: RichTextDTOFixture.factory().makeSingle(),
-          nda: SelectDTOFixture.factory().makeSingle(),
+          nda: SelectDTOFixture.factory(["Sì", "No"]).makeSingle(),
           codice: TitleDTOFixture.factory().makeSingle(),
           tempisticheDiPagamento: RichTextDTOFixture.factory().makeSingle(),
           descrizioneDelProgetto: RichTextDTOFixture.factory().makeSingle(),
-          tipoDiRelazione: SelectDTOFixture.factory().makeSingle(),
+          tipoDiRelazione: SelectDTOFixture.factory([
+            "Con altri professionisti",
+            "Solo con chi commissiona il lavoro",
+          ]).makeSingle(),
         ),
       );
 
@@ -54,19 +61,19 @@ class PropertiesDTOFixtureFactory extends JsonFixtureFactory<PropertiesDTO> {
                   .makeJsonObjectFromSingle(object.jobPosted!),
           K.teamKey: object.team == null
               ? null
-              : SelectDTOFixture.factory()
+              : SelectDTOFixture.factory(["Full Remote", "Ibrido", "In sede"])
                   .makeJsonObjectFromSingle(object.team!),
           K.contractKey: object.contratto == null
               ? null
-              : SelectDTOFixture.factory()
+              : SelectDTOFixture.factory(["Part time", "Full time"])
                   .makeJsonObjectFromSingle(object.contratto!),
           K.seniorityKey: object.seniority == null
               ? null
-              : SelectDTOFixture.factory()
+              : SelectDTOFixture.factory(["Junior", "Mid", "Senior"])
                   .makeJsonObjectFromSingle(object.seniority!),
           K.ralKey: object.ral == null
               ? null
-              : SelectDTOFixture.factory()
+              : SelectDTOFixture.factory(["50k annui", "60k annui"])
                   .makeJsonObjectFromSingle(object.ral!),
           K.namePropertyKey: object.name == null
               ? null
@@ -119,7 +126,7 @@ class PropertiesDTOFixtureFactory extends JsonFixtureFactory<PropertiesDTO> {
                   .makeJsonObjectFromSingle(object.budget!),
           K.ndaKey: object.nda == null
               ? null
-              : SelectDTOFixture.factory()
+              : SelectDTOFixture.factory(["Sì", "No"])
                   .makeJsonObjectFromSingle(object.nda!),
           K.codiceKey: object.codice == null
               ? null
@@ -135,8 +142,10 @@ class PropertiesDTOFixtureFactory extends JsonFixtureFactory<PropertiesDTO> {
                   .makeJsonObjectFromSingle(object.descrizioneDelProgetto!),
           K.tipoDiRelazioneKey: object.tipoDiRelazione == null
               ? null
-              : SelectDTOFixture.factory()
-                  .makeJsonObjectFromSingle(object.tipoDiRelazione!),
+              : SelectDTOFixture.factory([
+                  "Con altri professionisti",
+                  "Solo con chi commissiona il lavoro",
+                ]).makeJsonObjectFromSingle(object.tipoDiRelazione!),
         },
       );
 }

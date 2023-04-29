@@ -1,11 +1,9 @@
 import 'package:offertelavoroflutter_app/models/favourite_job.dart';
-import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 
 class FavouriteRepository {
   List<FavouriteJob> favourites = [];
-  JobRepository jobRepository;
 
-  FavouriteRepository(this.jobRepository);
+  FavouriteRepository();
 
   List<FavouriteJob> addFavourite(FavouriteJob job) {
     favourites.add(job);

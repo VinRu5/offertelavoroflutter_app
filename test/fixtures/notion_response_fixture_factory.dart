@@ -5,18 +5,22 @@ import 'package:offertelavoroflutter_app/services/network/dto/notion_response.da
 import 'job_dto_fixture_factory.dart';
 
 extension NotionResponseFixture on NotionResponse {
-  static NotionResponseFixtureFactory factory() =>
-      NotionResponseFixtureFactory();
+  static NotionResponseFixtureFactory factory([bool hasMore = false]) =>
+      NotionResponseFixtureFactory(hasMore);
 }
 
 class NotionResponseFixtureFactory extends JsonFixtureFactory<NotionResponse> {
+  final bool hasMore;
+
+  NotionResponseFixtureFactory([this.hasMore = false]);
+
   @override
   FixtureDefinition<NotionResponse> definition() => define(
         (faker) => NotionResponse(
           object: "list",
           results: JobDTOFixture.factory().makeMany(3),
-          nextCursor: null,
-          hasMore: false,
+          nextCursor: hasMore ? "f7c1e8ec-be69-4b40-96f0-bad87b44a1fc" : null,
+          hasMore: hasMore,
           type: "page",
           page: {},
         ),
