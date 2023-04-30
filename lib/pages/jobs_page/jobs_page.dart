@@ -14,7 +14,6 @@ import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/freelance_list.
 import 'package:offertelavoroflutter_app/pages/jobs_page/widgets/jobs_list.dart';
 import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
-import 'package:offertelavoroflutter_app/widgets/job_flutter_button.dart';
 
 typedef PageChanged = Function(int index);
 

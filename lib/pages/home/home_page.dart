@@ -30,6 +30,7 @@ class _ContentHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
+        key: const Key("first list view"),
         physics: const BouncingScrollPhysics(),
         children: [
           Container(
@@ -98,6 +99,7 @@ class _ContentHome extends StatelessWidget {
               children: [
                 Expanded(
                   child: ClickableCard(
+                    key: const Key("go to jobs"),
                     text: "💼\nLavoro per assunzioni",
                     onPressed: () =>
                         context.router.push(JobsRoute(initialPage: 0)),
@@ -106,6 +108,7 @@ class _ContentHome extends StatelessWidget {
                 const SizedBox(width: 16.0),
                 Expanded(
                   child: ClickableCard(
+                    key: const Key("go to freelance"),
                     text: "🧑🏻‍💻\nProgetti freelance",
                     onPressed: () =>
                         context.router.push(JobsRoute(initialPage: 1)),
