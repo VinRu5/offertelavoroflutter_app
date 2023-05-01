@@ -16,6 +16,7 @@ import 'package:offertelavoroflutter_app/repositories/job_repository.dart';
 import 'package:offertelavoroflutter_app/theme/models/app_colors.dart';
 
 typedef PageChanged = Function(int index);
+typedef JobsPageState = _JobsPageState;
 
 @RoutePage()
 class JobsPage extends StatefulWidget with AutoRouteWrapper {
@@ -52,10 +53,10 @@ class _JobsPageState extends State<JobsPage> {
   bool isFreelance = false;
   bool hasMoreJobs = false;
   bool hasMoreFreelance = false;
-  Filters filtersJob = Filters();
-  Sorts sortsJob = Sorts();
-  Filters filtersFreelance = Filters();
-  Sorts sortsFreelance = Sorts();
+  Filters filtersJob = const Filters();
+  Sorts sortsJob = const Sorts();
+  Filters filtersFreelance = const Filters();
+  Sorts sortsFreelance = const Sorts();
 
   final List<Widget> _pages = const [
     JobsList(),
@@ -195,10 +196,6 @@ class _JobsPageState extends State<JobsPage> {
     }
 
     return true;
-  }
-
-  Future<void> _refresh() async {
-    print("ciao");
   }
 }
 
