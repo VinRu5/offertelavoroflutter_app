@@ -1,15 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/misc/constants.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/job_dto.dart';
 import 'package:pine/dto/dto.dart';
 
 class NotionResponse extends DTO with EquatableMixin {
-  static const _objectKey = "object";
-  static const _resultsKey = "results";
-  static const _nextCursorKey = "next_cursor";
-  static const _hasMoreKey = "has_more";
-  static const _typeKey = "type";
-  static const _pageKey = "page";
-
   final String? object;
   final List<JobDTO> results;
   final String? nextCursor;
@@ -27,12 +21,16 @@ class NotionResponse extends DTO with EquatableMixin {
   });
 
   factory NotionResponse.fromJson(Map<String, dynamic> json) => NotionResponse(
-        object: json[_objectKey],
-        results: json[_resultsKey].map(JobDTO.fromJson),
-        nextCursor: json[_nextCursorKey],
-        hasMore: json[_hasMoreKey],
-        type: json[_typeKey],
-        page: json[_pageKey],
+        object: json[K.objectKey],
+        results: json[K.resultsKey]
+            .map<JobDTO>(
+              (result) => JobDTO.fromJson(result),
+            )
+            .toList(growable: false),
+        nextCursor: json[K.nextCursorKey],
+        hasMore: json[K.hasMoreKey],
+        type: json[K.typeKey],
+        page: json[K.pageKey],
       );
 
   @override

@@ -1,26 +1,23 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/misc/constants.dart';
+import 'package:offertelavoroflutter_app/services/network/dto/property_dto.dart';
 import 'package:offertelavoroflutter_app/services/network/dto/text_dto.dart';
-import 'package:pine/dto/dto.dart';
 
-class TitleDTO extends DTO with EquatableMixin {
-  static const _idKey = "id";
-  static const _typeKey = "type";
-  static const _titleKey = "title";
-
-  final String? id;
-  final String? type;
+class TitleDTO extends PropertyDTO with EquatableMixin {
   final List<TextDTO> title;
 
   TitleDTO({
-    required this.id,
-    required this.type,
+    required super.id,
+    required super.type,
     required this.title,
   });
 
   factory TitleDTO.fromJson(Map<String, dynamic> json) => TitleDTO(
-        id: json[_idKey],
-        type: json[_typeKey],
-        title: json[_titleKey].map(TextDTO.fromJson),
+        id: json[K.idKey],
+        type: json[K.typeKey],
+        title: json[K.titleKey]
+            .map<TextDTO>((item) => TextDTO.fromJson(item))
+            .toList(growable: false),
       );
 
   @override

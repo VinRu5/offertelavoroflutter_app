@@ -1,13 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:offertelavoroflutter_app/misc/constants.dart';
 import 'package:pine/dto/dto.dart';
 
 class TextDTO extends DTO with EquatableMixin {
-  static const _typeKey = "type";
-  static const _textKey = "text";
-  static const _annotationsKey = "annotations";
-  static const _plainTextKey = "plain_text";
-  static const _hrefKey = "href";
-
   final String? type;
   final TextContentDTO? text;
   final AnnotationsDTO? annotations;
@@ -23,11 +18,15 @@ class TextDTO extends DTO with EquatableMixin {
   });
 
   factory TextDTO.fromJson(Map<String, dynamic> json) => TextDTO(
-        type: json[_typeKey],
-        text: TextContentDTO.fromJson(json[_textKey]),
-        annotations: AnnotationsDTO.fromJson(json[_annotationsKey]),
-        plainText: json[_plainTextKey],
-        href: json[_hrefKey],
+        type: json[K.typeKey],
+        text: json[K.textKey] == null
+            ? null
+            : TextContentDTO.fromJson(json[K.textKey]),
+        annotations: json[K.annotationsKey] == null
+            ? null
+            : AnnotationsDTO.fromJson(json[K.annotationsKey]),
+        plainText: json[K.plainTextKey],
+        href: json[K.hrefKey],
       );
 
   @override
@@ -41,9 +40,6 @@ class TextDTO extends DTO with EquatableMixin {
 }
 
 class TextContentDTO extends DTO with EquatableMixin {
-  static const _contentKey = "content";
-  static const _linkKey = "link";
-
   final String? content;
   final String? link;
 
@@ -53,9 +49,16 @@ class TextContentDTO extends DTO with EquatableMixin {
   });
 
   factory TextContentDTO.fromJson(Map<String, dynamic> json) => TextContentDTO(
-        content: json[_contentKey],
-        link: json[_linkKey],
+        content: json[K.contentKey],
+        link: json[K.linkKey] == null ? null : json[K.linkKey][K.urlKey],
       );
+
+  Map<String, dynamic> toJson() => {
+        K.contentKey: content,
+        K.linkKey: {
+          K.urlKey: link,
+        }
+      };
 
   @override
   List<Object?> get props => [
@@ -65,13 +68,6 @@ class TextContentDTO extends DTO with EquatableMixin {
 }
 
 class AnnotationsDTO extends DTO with EquatableMixin {
-  static const _boldKey = "bold";
-  static const _italicKey = "italic";
-  static const _strikethroughKey = "strikethrough";
-  static const _undelineKey = "underline";
-  static const _codeKey = "code";
-  static const _colorKey = "color";
-
   final bool bold;
   final bool italic;
   final bool strikethrough;
@@ -89,13 +85,22 @@ class AnnotationsDTO extends DTO with EquatableMixin {
   });
 
   factory AnnotationsDTO.fromJson(Map<String, dynamic> json) => AnnotationsDTO(
-        bold: json[_boldKey],
-        italic: json[_italicKey],
-        strikethrough: json[_strikethroughKey],
-        underline: json[_undelineKey],
-        code: json[_codeKey],
-        color: json[_colorKey],
+        bold: json[K.boldKey],
+        italic: json[K.italicKey],
+        strikethrough: json[K.strikethroughKey],
+        underline: json[K.undelineKey],
+        code: json[K.codeKey],
+        color: json[K.colorKey],
       );
+
+  Map<String, dynamic> toJson() => {
+        K.boldKey: bold,
+        K.italicKey: italic,
+        K.strikethroughKey: strikethrough,
+        K.undelineKey: underline,
+        K.codeKey: code,
+        K.colorKey: color,
+      };
 
   @override
   List<Object?> get props => [
